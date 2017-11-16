@@ -1,13 +1,6 @@
-import java.util.List;
-
-import syntaxtree.ClassDeclaration;
-import syntaxtree.ClassExtendsDeclaration;
-import syntaxtree.FormalParameter;
-import syntaxtree.Goal;
-import syntaxtree.MainClass;
-import syntaxtree.MethodDeclaration;
-import syntaxtree.VarDeclaration;
-import visitor.GJVoidDepthFirst;
+import syntaxtree.*;
+import visitor.*;
+import java.util.*;
 
 class ClassVisitor extends GJVoidDepthFirst<List<ClassType>>{
 	
@@ -15,11 +8,10 @@ class ClassVisitor extends GJVoidDepthFirst<List<ClassType>>{
 		String cname = n.f1.f0.toString();
 		//check whether classname already exists
 		if (Helper.getClass(cname, classList) != null){
-			Helper.exit(2);
+			Helper.exit("Type error");
 		}
 
 		ClassType newclass = new ClassType(cname);
-		newclass.setMain();
 		classList.add(newclass);
 	}
 	
@@ -28,7 +20,7 @@ class ClassVisitor extends GJVoidDepthFirst<List<ClassType>>{
 		String cname = n.f1.f0.toString();	
 		//check whether classname already exists
 		if (Helper.getClass(cname, classList) != null){
-			Helper.exit(3);
+			Helper.exit("Type error");
 		}
 
 		ClassType newclass = new ClassType(cname);
@@ -40,7 +32,7 @@ class ClassVisitor extends GJVoidDepthFirst<List<ClassType>>{
 		String cname = n.f1.f0.toString();
 		//check whether classname already exists
 		if (Helper.getClass(cname, classList) != null){
-			Helper.exit(4);
+			Helper.exit("Type error");
 		}
 		ClassType newclass = new ClassType(cname);
 		classList.add(newclass);
@@ -58,7 +50,7 @@ class ClassExtendsVisitor extends GJVoidDepthFirst<List<ClassType>> {
 
 		//check whether super class exists
 		if (super_class == null || curr_class == null){
-			Helper.exit(5);
+			Helper.exit("Type error");
 		}
 		curr_class.super_class = super_class;
 	}
@@ -97,7 +89,7 @@ class MethodVisitor extends GJVoidDepthFirst<List<GType>>{
 
 		ClassType curr_class = Helper.getClass(className,classList);
 		if (curr_class == null){
-			Helper.exit(15);
+			Helper.exit("Type error");
 		}
 
 		this.methodName = n.f2.f0.toString();
@@ -118,11 +110,11 @@ class MethodVisitor extends GJVoidDepthFirst<List<GType>>{
 	public void visit(VarDeclaration n, List<GType> tmp) {
 		ClassType curr_class = Helper.getClass(this.className, classList); 
 		if (curr_class == null){
-			Helper.exit(6);
+			Helper.exit("Type error");
 		}
 		Method curr_method = Helper.getMethod(methodName, curr_class);
 		if (curr_method == null){
-			Helper.exit(6);
+			Helper.exit("Type error");
 		}
 
 		GType new_var = GType.getType(n.f0, classList);
@@ -134,11 +126,11 @@ class MethodVisitor extends GJVoidDepthFirst<List<GType>>{
 	public void visit(FormalParameter n, List<GType> tmp){
 		ClassType curr_class = Helper.getClass(this.className, classList); 
 		if (curr_class == null){
-			Helper.exit(6);
+			Helper.exit("Type error");
 		}
 		Method curr_method = Helper.getMethod(methodName, curr_class);
 		if (curr_method == null){
-			Helper.exit(6);
+			Helper.exit("Type error");
 		}
 
 		GType new_arg = GType.getType(n.f0, classList);
@@ -181,7 +173,7 @@ class FieldVisitor extends GJVoidDepthFirst<List<GType>>{
 
 		ClassType curr_class = Helper.getClass(className,classList);
 		if (curr_class == null){
-			Helper.exit(6);
+			Helper.exit("Type error");
 		}
 
 		String field_name = n.f1.f0.toString();
