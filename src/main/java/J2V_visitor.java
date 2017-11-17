@@ -650,8 +650,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //  Error("null pointer")
     //null1:
     
-    if (a == 0) {
-    	System.out.println("Check Here : "+ a);
+    if (a != 0) {
     	int null1 = env.getLabel("null");
     	stmtIfGoto(a, null1);
     	pushIndentation();
