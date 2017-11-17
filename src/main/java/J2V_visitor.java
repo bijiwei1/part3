@@ -338,16 +338,16 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     int ticket3 = env.getTemporary();
     int ticket4 = env.getTemporary();
     int ticket5 = env.getTemporary();
-    int null1 = env.getLabel("null"); 
+    int bound1 = env.getLabel("bounds"); 
     
     stmtMemoryAccess(ticket1, env.findVariableEnv(a));
     stmtAssignment(ticket2, "Lt(" + env.findVariableEnv(b) + " " + env.findVariableEnv(ticket1) + ")");
-    stmtIfGoto(ticket2, null1);
+    stmtIfGoto(ticket2, bound1);
     pushIndentation();
     indentVapor();
     System.out.println("Error(\"array index out of bounds\")");
     popIndentation();
-    stmtLabel(null1);
+    stmtLabel(bound1);
     stmtAssignment(ticket3, "MulS(" + env.findVariableEnv(b) + " 4)");
     stmtAssignment(ticket4, "Add(" + env.findVariableEnv(a) + " " + env.findVariableEnv(ticket3) + ")");
     stmtAssignment(ticket5, "Add(" + env.findVariableEnv(ticket4) + " 4)");

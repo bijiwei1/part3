@@ -168,7 +168,7 @@ public class VaporEnv {
     
     if (curr_class.fields_name.contains(s)) {
     	offset = curr_class.fields_name.indexOf(s)+4;
-    	t = "[this+" + offset + "]";
+    	t = "[this+" + offset*4 + "]";
     	ticket = getTemporary();
     	s = findVariableEnv(ticket);
     	System.out.println(s + " = " + t);
