@@ -766,6 +766,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
 
     String parameters = "";
 
+    /*
     for (Integer ticket_param : env.call_parameters_ticket) {
       parameters += " ";
       if (ticket_param == -1) {
@@ -774,6 +775,15 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
       }else {
     	  parameters += env.findVariableEnv(ticket_param);
       }
+    }*/
+    for (int i = 0; i < env.call_parameters_ticket.size(); i ++) {
+    	parameters += " ";
+    	Integer ticket = env.call_parameters_ticket.get(i);
+    	if (ticket == -1) {
+    		parameters += env.call_parameters_const.get(i);
+    	}else {
+    		parameters += env.findVariableEnv(ticket);
+    	}
     }
 
     stmtAssignment(ticket2, "call " + env.findVariableEnv(ticket1) + "(" + env.findVariableEnv(a) + parameters + ")");
