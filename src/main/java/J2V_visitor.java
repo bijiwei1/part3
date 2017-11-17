@@ -855,7 +855,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //stmtAssignment(ticket, n.f0.toString());
     _ret = -1;
     env.const_num = n.f0.toString();
-    System.out.println("Add constant number" + env.const_num);
+    //System.out.println("Add constant number" + env.const_num);
     return _ret;
   }
 
