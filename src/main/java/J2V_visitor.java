@@ -5,7 +5,6 @@ import java.util.*;
 public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   VaporEnv env;
   List<ClassType> classList; 
-  String const_num; 
   
   public J2V_visitor(VaporEnv env) {
     this.env = env;
@@ -644,7 +643,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     Integer _ret=null;
     int a = n.f0.accept(this);
     int b = n.f2.accept(this);
-    String index = "";
   
     int ticket1 = env.getTemporary();
     int ticket2 = env.getTemporary();
@@ -807,11 +805,9 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     
     env.call_parameters_ticket.add(a);
     if (a == -1) {
-    	env.call_parameters_const.add(const_num);
-    	System.out.println("Add param const "+ const_num);
+    	env.call_parameters_const.add(env.const_num);
     }else {
     	env.call_parameters_const.add("NULL");
-    	System.out.println("Add param not const ");
     }
     n.f1.accept(this);
     return _ret;
@@ -826,11 +822,9 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     Integer a = n.f1.accept(this);
     env.call_parameters_ticket.add(a);
     if (a == -1) {
-    	env.call_parameters_const.add(const_num);
-    	System.out.println("Add param const "+ const_num);
+    	env.call_parameters_const.add(env.const_num);
     }else {
     	env.call_parameters_const.add("NULL");
-    	System.out.println("Add param not const ");
     }
     return _ret;
   }
@@ -860,7 +854,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //int ticket = env.getTemporary(); 
     //stmtAssignment(ticket, n.f0.toString());
     _ret = -1;
-    //const_num = n.f0.toString();
     env.const_num = n.f0.toString();
     System.out.println("Add constant number" + env.const_num);
     return _ret;
