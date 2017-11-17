@@ -204,7 +204,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     String type = obj.toString();
     
     String arg = n.f1.f0.toString();
-    int ticket = env.getIdentifier(arg);
+    int ticket = env.getIdentifier(arg, true);
     env.variable_map.get(ticket).class_name = type; 
 
     return _ret;
@@ -879,7 +879,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    * f0 -> <IDENTIFIER>
    */
   public Integer visit(Identifier n) {
-    Integer _ret = env.getIdentifier(n.f0.toString());
+    Integer _ret = env.getIdentifier(n.f0.toString(), false);
     return _ret;
   }
 
