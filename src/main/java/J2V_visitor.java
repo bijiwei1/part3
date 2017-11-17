@@ -313,7 +313,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     }
     
     stmtAssignment(ticket, env.findVariableEnv(a)); 
-    stmtPrint(env.findVariableEnvStrict(ticket) + " = " + env.findVariableEnv(a));
+    //stmtPrint(env.findVariableEnvStrict(ticket) + " = " + env.findVariableEnv(a));
     
     _ret = ticket;
     return _ret;

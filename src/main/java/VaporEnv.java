@@ -21,11 +21,11 @@ public class VaporEnv {
     this.classList = classList;
 
     indentation_level = 0;
-    label_num[0] = 0;
-    label_num[1] = 0;
-    label_num[2] = 0;
-    label_num[3] = 0;
-    label_num[4] = 0;
+    label_num[0] = 1;
+    label_num[1] = 1;
+    label_num[2] = 1;
+    label_num[3] = 1;
+    label_num[4] = 1;
     tmp_num = 0;
     var_num = 0;
     variable_map = null;
