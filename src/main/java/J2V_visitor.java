@@ -651,6 +651,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //null1:
     
     if (a == 0) {
+    	System.out.println("Check Here : "+ a);
     	int null1 = env.getLabel("null");
     	stmtIfGoto(a, null1);
     	pushIndentation();
