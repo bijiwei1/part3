@@ -14,8 +14,10 @@ public class VaporEnv {
   int var_num;
   HashMap<Integer, VaporValue> variable_map;
   HashMap<String, Integer> identifier_map;
-  Vector<Integer> call_parameters;
-  Stack<Vector<Integer>> call_list;
+  //Vector<Integer> call_parameters;
+  List<Integer> call_parameters_ticket;
+  List<String> call_parameters_const;
+  //Stack<List<Integer>> call_list;
   
   public VaporEnv(List<ClassType> classList) {
     this.classList = classList;
@@ -30,8 +32,9 @@ public class VaporEnv {
     var_num = 0;
     variable_map = null;
     identifier_map = null;
-
-    call_list = new Stack<Vector<Integer>>();
+    call_parameters_ticket = new ArrayList<Integer>();
+    call_parameters_const = new ArrayList<String>();
+    //call_list = new Stack<List<Integer>>();
 
   }
   
@@ -77,15 +80,19 @@ public class VaporEnv {
     tmp_num = 0;
   }
 
+  void clearCallParam() {
+	  call_parameters_ticket.clear();
+	  call_parameters_const.clear();  
+  }
 
   //Methods to support environment variable operations
 
-  int obtainVarNumber() {
+  int addVarNum() {
 	  var_num += 1;
     return var_num - 1;
   }
 
-  int obtainTempNumber() {
+  int addTmpNum() {
 	  tmp_num += 1;
     return tmp_num - 1;
   }
@@ -111,7 +118,7 @@ public class VaporEnv {
   }
   
 
-  //Add new identifier to registers
+  //
   int getIdentifier(String identifier) {
 
     Integer out = identifier_map.get(identifier);
@@ -119,7 +126,7 @@ public class VaporEnv {
     int ticket = 0;
 
     if (out == null) {
-      ticket = obtainVarNumber(); 
+      ticket = addVarNum(); 
       VaporValue v = new VaporValue(identifier);
       variable_map.put(ticket, v);
       identifier_map.put(identifier, ticket);
@@ -131,17 +138,16 @@ public class VaporEnv {
   }
   
   int getTemporary() {
-    int ticket = obtainVarNumber();
-    int tmp = obtainTempNumber();
+    int ticket = addVarNum();
+    int tmp = addTmpNum();
 
     VaporValue v = new VaporValue("t." + tmp); 
     variable_map.put(ticket, v);
     return ticket;
   }
 
-
   int getLabel(String type) {
-    int ticket = obtainVarNumber();
+    int ticket = addVarNum();
     int tmp = addLabel(type);
     
     VaporValue v ;
@@ -178,11 +184,11 @@ public class VaporEnv {
     	s = findVariableEnv(ticket);
     	System.out.println(s + " = " + t);
     }
+    
     return s;
   }
   
 }
-
 
 class VaporValue {
   String identifier;
@@ -192,4 +198,6 @@ class VaporValue {
     class_name = null;
   }
 }
+
+
 
