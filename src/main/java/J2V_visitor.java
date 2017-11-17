@@ -808,8 +808,10 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     env.call_parameters_ticket.add(a);
     if (a == -1) {
     	env.call_parameters_const.add(const_num);
+    	System.out.println("Add param const "+ const_num);
     }else {
     	env.call_parameters_const.add("NULL");
+    	System.out.println("Add param not const ");
     }
     n.f1.accept(this);
     return _ret;
@@ -825,8 +827,10 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     env.call_parameters_ticket.add(a);
     if (a == -1) {
     	env.call_parameters_const.add(const_num);
+    	System.out.println("Add param const "+ const_num);
     }else {
     	env.call_parameters_const.add("NULL");
+    	System.out.println("Add param not const ");
     }
     return _ret;
   }
