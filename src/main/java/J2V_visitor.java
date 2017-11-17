@@ -165,13 +165,12 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     stmtMethodParam(class_name, method_name);
     n.f4.accept(this);
 
-
     pushIndentation();
+    
     n.f7.accept(this);
     n.f8.accept(this);
     int a = n.f10.accept(this);
 
-    
     indentVapor();
     
     System.out.println("ret " + env.findVariableEnv(a));
@@ -554,23 +553,15 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   public Integer visit(PlusExpression n) {
     Integer _ret=null;
    
-    
+    String E1 = "";
     int a = n.f0.accept(this);
+    E1 = env.findVariableEnv(a);
+    
     int b = n.f2.accept(this);
     
     int ticket = env.getTemporary();
-    /*
-    if (a == -1 && b == -1) {
-   	 stmtAssignment(ticket, "Add(" + PE1 + " " + PE2 + ")");
-   }else if (a == -1) {
-   	stmtAssignment(ticket, "Add(" + PE1 + " " + env.findVariableEnv(b) + ")");
-   }else if (b == -1) {
-   	stmtAssignment(ticket, "Add(" + env.findVariableEnv(a) + " " + PE2 + ")");
-   }else {
-   	stmtAssignment(ticket, "Add(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
-   }*/
     
-    stmtAssignment(ticket, "Add(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
+    stmtAssignment(ticket, "Add(" + E1 + " " + env.findVariableEnv(b) + ")");
     _ret = ticket;
     return _ret;
   }
@@ -583,7 +574,10 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   public Integer visit(MinusExpression n) {
     Integer _ret=null;
     
+    String E1 = "";
     int a = n.f0.accept(this);
+    E1 = env.findVariableEnv(a);
+    
     int b = n.f2.accept(this);
     
     int ticket = env.getTemporary();
@@ -597,7 +591,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
       }else {
       	stmtAssignment(ticket, "Sub(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
       }*/
-    stmtAssignment(ticket, "Sub(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
+    stmtAssignment(ticket, "Sub(" + E1 + " " + env.findVariableEnv(b) + ")");
     _ret = ticket;
     return _ret;
   }
@@ -609,8 +603,10 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    */
   public Integer visit(TimesExpression n) {
     Integer _ret=null;
-    
-    int a = n.f0.accept(this); 
+
+    String E1 = "";
+    int a = n.f0.accept(this);
+    E1 = env.findVariableEnv(a);
     int b = n.f2.accept(this);
     
     int ticket = env.getTemporary();
@@ -627,7 +623,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
       }
       */
 
-    stmtAssignment(ticket, "MulS(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
+    stmtAssignment(ticket, "MulS(" + E1 + " " + env.findVariableEnv(b) + ")");
     
     _ret = ticket;
     return _ret;
@@ -864,11 +860,8 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    */
   public Integer visit(TrueLiteral n) {
     Integer _ret=null;
-
-    int ticket = env.getTemporary(); 
-    stmtAssignment(ticket, "1");
-    _ret = ticket;
-    //_ret = -2;
+    _ret = -1;
+    env.const_num = "1";
     return _ret;
   }
 
@@ -877,11 +870,8 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    */
   public Integer visit(FalseLiteral n) {
     Integer _ret=null;
-
-    int ticket = env.getTemporary(); 
-    stmtAssignment(ticket, "0");
-    _ret = ticket;
-    //_ret = -3; 
+    _ret = -1;
+    env.const_num = "1";
     return _ret;
   }
 
