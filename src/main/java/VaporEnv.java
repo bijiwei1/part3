@@ -18,6 +18,7 @@ public class VaporEnv {
   List<Integer> call_parameters_ticket;
   List<String> call_parameters_const;
   //Stack<List<Integer>> call_list;
+  String const_num; 
   
   public VaporEnv(List<ClassType> classList) {
     this.classList = classList;
@@ -35,6 +36,7 @@ public class VaporEnv {
     call_parameters_ticket = new ArrayList<Integer>();
     call_parameters_const = new ArrayList<String>();
     //call_list = new Stack<List<Integer>>();
+    const_num = "";
 
   }
   
@@ -169,6 +171,9 @@ public class VaporEnv {
   
 
   String findVariableEnv(int ticket) {
+	 if (ticket == -1) {
+		 return const_num;
+	 }
     String s = variable_map.get(ticket).identifier;
     String t;
     int offset = 0;

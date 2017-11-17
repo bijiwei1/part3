@@ -513,18 +513,20 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   public Integer visit(CompareExpression n) {
     Integer _ret=null;
     int a = n.f0.accept(this);
+    /*
     String PE1 = "";
     String PE2 = "";
     //If this is constant 
     if (a == -1) {
     	PE1 = const_num;
-    }
+    }*/
     int b = n.f2.accept(this);
+    /*
     if (b == -1) {
     	PE2 = const_num;
-    }
+    }*/
     int ticket = env.getTemporary();
-    
+    /*
     if (a == -1 && b == -1) {
     	 stmtAssignment(ticket, "LtS(" + PE1 + " " + PE2 + ")");
     }else if (a == -1) {
@@ -533,8 +535,8 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     	stmtAssignment(ticket, "LtS(" + env.findVariableEnv(a) + " " + PE2 + ")");
     }else {
     	stmtAssignment(ticket, "LtS(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
-    }
-
+    }*/
+    stmtAssignment(ticket, "LtS(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
     _ret = ticket;
     return _ret;
   }
@@ -546,22 +548,13 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    */
   public Integer visit(PlusExpression n) {
     Integer _ret=null;
-    String PE1 = "";
-    String PE2 = "";
+   
     
     int a = n.f0.accept(this);
-    //If this is constant 
-    if (a == -1) {
-    	PE1 = const_num;
-    }
-    
     int b = n.f2.accept(this);
-    if (b == -1) {
-    	PE2 = const_num;
-    }
     
     int ticket = env.getTemporary();
-
+    /*
     if (a == -1 && b == -1) {
    	 stmtAssignment(ticket, "Add(" + PE1 + " " + PE2 + ")");
    }else if (a == -1) {
@@ -570,9 +563,9 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    	stmtAssignment(ticket, "Add(" + env.findVariableEnv(a) + " " + PE2 + ")");
    }else {
    	stmtAssignment(ticket, "Add(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
-   }
+   }*/
     
-    //stmtAssignment(ticket, "Add(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
+    stmtAssignment(ticket, "Add(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
     _ret = ticket;
     return _ret;
   }
@@ -584,22 +577,12 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    */
   public Integer visit(MinusExpression n) {
     Integer _ret=null;
-    String PE1 = "";
-    String PE2 = "";
     
     int a = n.f0.accept(this);
-    //If this is constant 
-    if (a == -1) {
-    	PE1 = const_num;
-    }
-    
     int b = n.f2.accept(this);
-    if (b == -1) {
-    	PE2 = const_num;
-    }
     
     int ticket = env.getTemporary();
-
+    /*
     if (a == -1 && b == -1) {
       	 stmtAssignment(ticket, "Sub(" + PE1 + " " + PE2 + ")");
       }else if (a == -1) {
@@ -608,8 +591,8 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
       	stmtAssignment(ticket, "Sub(" + env.findVariableEnv(a) + " " + PE2 + ")");
       }else {
       	stmtAssignment(ticket, "Sub(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
-      }
-    //stmtAssignment(ticket, "Sub(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
+      }*/
+    stmtAssignment(ticket, "Sub(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
     _ret = ticket;
     return _ret;
   }
@@ -622,22 +605,12 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   public Integer visit(TimesExpression n) {
     Integer _ret=null;
     
-    String PE1 = "";
-    String PE2 = "";
-    
-    int a = n.f0.accept(this);
-    //If this is constant 
-    if (a == -1) {
-    	PE1 = const_num;
-    }
-    
+    int a = n.f0.accept(this); 
     int b = n.f2.accept(this);
-    if (b == -1) {
-    	PE2 = const_num;
-    }
     
     int ticket = env.getTemporary();
 
+    /*
     if (a == -1 && b == -1) {
       	 stmtAssignment(ticket, "MulS(" + PE1 + " " + PE2 + ")");
       }else if (a == -1) {
@@ -647,8 +620,9 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
       }else {
       	stmtAssignment(ticket, "MulS(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
       }
+      */
 
-    //stmtAssignment(ticket, "MulS(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
+    stmtAssignment(ticket, "MulS(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
     
     _ret = ticket;
     return _ret;
@@ -665,11 +639,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     int a = n.f0.accept(this);
     int b = n.f2.accept(this);
     String index = "";
-    //If b is constant
-    if (b == -1) {
-    	//index = Integer.parseInt(const_num);
-    	index = const_num;
-    }
+  
     int ticket1 = env.getTemporary();
     int ticket2 = env.getTemporary();
     int ticket3 = env.getTemporary();
@@ -689,23 +659,25 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //ticket5 = [ticket4+4]
     
     stmtMemoryAccess(ticket1, env.findVariableEnv(a));
+    /*
     if (b == -1) {
     	stmtAssignment(ticket2, "Lt(" + index + " " + env.findVariableEnv(ticket1) + ")");
     }else {
     	stmtAssignment(ticket2, "Lt(" + env.findVariableEnv(b) + " " + env.findVariableEnv(ticket1) + ")");
-    }
-    //stmtAssignment(ticket2, "Lt(" + env.findVariableEnv(b) + " " + env.findVariableEnv(ticket1) + ")");
+    }*/
+    stmtAssignment(ticket2, "Lt(" + env.findVariableEnv(b) + " " + env.findVariableEnv(ticket1) + ")");
     stmtIfGoto(ticket2, bound1);
     pushIndentation();
     stmtPrint("Error(\"array index out of bounds\")");
     popIndentation();
     stmtLabel(bound1);
+    /*
     if (b == -1) {
     	stmtAssignment(ticket3, "MulS(" + index + " 4)");
     }else {
     	stmtAssignment(ticket3, "MulS(" + env.findVariableEnv(b) + " 4)");
-    }
-    //stmtAssignment(ticket3, "MulS(" + env.findVariableEnv(b) + " 4)");
+    }*/
+    stmtAssignment(ticket3, "MulS(" + env.findVariableEnv(b) + " 4)");
     stmtAssignment(ticket4, "Add(" + env.findVariableEnv(a) + " " + env.findVariableEnv(ticket3) + ")");
     stmtMemoryAccess(ticket5, env.findVariableEnv(ticket4) + "+4");
 
@@ -868,7 +840,8 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //int ticket = env.getTemporary(); 
     //stmtAssignment(ticket, n.f0.toString());
     _ret = -1;
-    const_num = n.f0.toString();
+    //const_num = n.f0.toString();
+    env.const_num = n.f0.toString();
     return _ret;
   }
 
