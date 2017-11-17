@@ -176,7 +176,6 @@ public class VaporEnv {
           System.out.printf("  ");
         }
     }
-    
     return s;
   }
 

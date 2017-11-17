@@ -519,10 +519,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     stmtAssignment(ticket, "LtS(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
 
     _ret = ticket;
-
-    
-
-
     return _ret;
   }
 
@@ -653,7 +649,8 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //if a goto null1
     //  Error("null pointer")
     //null1:
-    if (env.findVariableEnv(a).equals("this")) {
+    
+    if (a == 0) {
     	int null1 = env.getLabel("null");
     	stmtIfGoto(a, null1);
     	pushIndentation();
@@ -683,7 +680,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
 
     //to get the function name in ticket1
     stmtMemoryAccess(ticket1, env.findVariableEnv(a));
-    stmtMemoryAccess(ticket1, env.findVariableEnv(ticket1) + "+" + String.valueOf(offset));
+    stmtMemoryAccess(ticket1, env.findVariableEnv(ticket1) + "+" + offset * 4);
       
     env.call_list.push(env.call_parameters);
     env.call_parameters = new Vector<Integer>();
