@@ -648,23 +648,20 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     Integer _ret=null;
 
     int a = n.f0.accept(this);
-    //Error Checking Pseudocode:
-    ////////////////////
+    
+    //Error check the null pointer (except for this):
     //if a goto null1
     //  Error("null pointer")
     //null1:
-    int null1 = env.getLabel("null");
+    if (env.findVariableEnv(a).equals("this")) {
+    	int null1 = env.getLabel("null");
+    	stmtIfGoto(a, null1);
+    	pushIndentation();
+    	stmtPrint("Error(\"null pointer\")");
+    	popIndentation();
+    	stmtLabel(null1);
+    }
 
-    stmtIfGoto(a, null1);
-    pushIndentation();
-    stmtPrint("Error(\"null pointer\")");
-    popIndentation();
-    stmtLabel(null1);
-    
-
-
-    //Normal Code
-    ////////////////////////
     int ticket1 = env.getTemporary();
     int ticket2 = env.getTemporary();
 
@@ -677,8 +674,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     } else {
       class_name = env.variable_map.get(a).class_name;
     }
-
-
 
     //J2VClassLayout class_layout = env.layout.get(class_name);
     ClassType curr_class = Helper.getClass(class_name, classList);
@@ -851,7 +846,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     VaporValue v = env.variable_map.get(ticket);
     v.class_name = class_name;
 
-    stmtAssignment(ticket, "HeapAllocZ(" + curr_class.methods.size()*4 + ")");
+    stmtAssignment(ticket, "HeapAllocZ(" + (curr_class.methods.size()-1)*4 + ")");
     stmtMemoryAssignment(ticket, ":vmt_" + curr_class.toString());
 
     /*

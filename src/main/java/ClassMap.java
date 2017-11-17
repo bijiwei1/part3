@@ -12,6 +12,7 @@ class ClassVisitor extends GJVoidDepthFirst<List<ClassType>>{
 		}
 
 		ClassType newclass = new ClassType(cname);
+		newclass.isMain = true; 
 		classList.add(newclass);
 	}
 	
