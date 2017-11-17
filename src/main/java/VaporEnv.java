@@ -60,6 +60,7 @@ public class VaporEnv {
   }
 
   void endParseMethod() {
+	  /*
 	  System.out.println("Variable Map");
 	  for (Integer ticket: variable_map.keySet()){
           String Vapor = variable_map.get(ticket).identifier;  
@@ -69,7 +70,7 @@ public class VaporEnv {
 	  for ( String idf: identifier_map.keySet()){
           Integer ticket = identifier_map.get(idf);  
           System.out.println(idf + " " + ticket.toString() );  
-      } 
+      } */
     variable_map = null;
     identifier_map = null;
     var_num = 0;
@@ -176,9 +177,6 @@ public class VaporEnv {
     	ticket = getTemporary();
     	s = findVariableEnv(ticket);
     	System.out.println(s + " = " + t);
-       // for (int i = 0; i < indentation_level; i++) {
-        //  System.out.printf("  ");
-       // }
     }
     return s;
   }
