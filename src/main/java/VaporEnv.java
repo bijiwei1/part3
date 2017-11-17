@@ -166,30 +166,25 @@ public class VaporEnv {
     String t;
     int offset = 0;
     
+    //Var is in class field
     if (curr_class.fields_name.contains(s)) {
-    	offset = curr_class.fields_name.indexOf(s)+4;
-    	t = "[this+" + offset*4 + "]";
+    	for (int i = 0; i < indentation_level; i++) {
+    		System.out.printf("  ");
+    	}
+    	offset = curr_class.fields_name.indexOf(s);
+    	t = "[this+" + (offset+1)*4 + "]";
     	ticket = getTemporary();
     	s = findVariableEnv(ticket);
     	System.out.println(s + " = " + t);
-        for (int i = 0; i < indentation_level; i++) {
-          System.out.printf("  ");
-        }
+       // for (int i = 0; i < indentation_level; i++) {
+        //  System.out.printf("  ");
+       // }
     }
     return s;
   }
-
-  String findVariableEnvStrict(int ticket) {
-    String s = variable_map.get(ticket).identifier;
-    int offset = 0;
-    
-    if (curr_class.fields_name.contains(s)) {
-    	offset = curr_class.fields_name.indexOf(s)+4;
-    	 s = "[this+" + offset + "]";
-    }
-    return s;
-  }
+  
 }
+
 
 class VaporValue {
   String identifier;
