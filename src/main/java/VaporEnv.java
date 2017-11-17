@@ -9,7 +9,7 @@ public class VaporEnv {
   
   //Used only in second pass
   int indentation_level;
-  int label_num;
+  int[] label_num = new int[5]; // 0 - if_else, 1 - while, 2 - null, 3 - bounds, 4 - other labels
   int tmp_num;
   int var_num;
   HashMap<Integer, VaporValue> variable_map;
@@ -21,7 +21,11 @@ public class VaporEnv {
     this.classList = classList;
 
     indentation_level = 0;
-    label_num = 0; //Only one instance of a label allowed in the entire program woooot
+    label_num[0] = 0;
+    label_num[1] = 0;
+    label_num[2] = 0;
+    label_num[3] = 0;
+    label_num[4] = 0;
     tmp_num = 0;
     var_num = 0;
     variable_map = null;
@@ -85,9 +89,24 @@ public class VaporEnv {
     return tmp_num - 1;
   }
 
-  int obtainLabelNumber() {
-	  label_num += 1;
-    return label_num - 1;
+  int addLabel (String type) {
+	  
+	  if (type.equals("if_else")) {
+		  label_num[0] +=1;
+		  return label_num[0] - 1;
+	  }else if (type.equals("while")) {
+		  label_num[1] +=1;
+		  return label_num[1] - 1;
+	  }else if (type.equals("null")) {
+		  label_num[2] +=1;
+		  return label_num[2] - 1;
+	  }else if (type.equals("bounds")) {
+		  label_num[3] +=1;
+		  return label_num[3] - 1;
+	  }else {
+		  label_num[4] +=1;
+		  return label_num[4] - 1;
+	  }
   }
   
 
@@ -120,11 +139,23 @@ public class VaporEnv {
   }
 
 
-  int getLabel() {
+  int getLabel(String type) {
     int ticket = obtainVarNumber();
-    int tmp = obtainLabelNumber();
-
-    VaporValue v = new VaporValue("control" + tmp);  
+    int tmp = addLabel(type);
+    
+    VaporValue v ;
+    if (type.equals("if_else")) {
+    	v = new VaporValue("if" + tmp + "_end"); 
+    }else if (type.equals("while")){
+    	v = new VaporValue("while" + tmp + "_end"); 
+    }else if (type.equals("null")) {
+    	v = new VaporValue("null" + tmp); 
+    }else if (type.equals("bounds")){
+    	v = new VaporValue("bounds" + tmp); 
+    }else {
+    	v = new VaporValue("label" + tmp);
+    }
+    
     variable_map.put(ticket, v);
     return ticket;
   }

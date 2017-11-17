@@ -338,16 +338,16 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     int ticket3 = env.getTemporary();
     int ticket4 = env.getTemporary();
     int ticket5 = env.getTemporary();
-    int control1 = env.getLabel();
+    int null1 = env.getLabel("null"); 
     
     stmtMemoryAccess(ticket1, env.findVariableEnv(a));
     stmtAssignment(ticket2, "Lt(" + env.findVariableEnv(b) + " " + env.findVariableEnv(ticket1) + ")");
-    stmtIfGoto(ticket2, control1);
+    stmtIfGoto(ticket2, null1);
     pushIndentation();
     indentVapor();
     System.out.println("Error(\"array index out of bounds\")");
     popIndentation();
-    stmtLabel(control1);
+    stmtLabel(null1);
     stmtAssignment(ticket3, "MulS(" + env.findVariableEnv(b) + " 4)");
     stmtAssignment(ticket4, "Add(" + env.findVariableEnv(a) + " " + env.findVariableEnv(ticket3) + ")");
     stmtAssignment(ticket5, "Add(" + env.findVariableEnv(ticket4) + " 4)");
@@ -371,32 +371,32 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
 
 
     int a = n.f2.accept(this);
-    int control1 = env.getLabel();
-    int control2 = env.getLabel();
+    int label1 = env.getLabel("if_else");
+    int label2 = env.getLabel("if_else");
     int ticket1 = env.getTemporary();
 
     //ticket1 = a < 1
-    //if ticket1 goto control1:
+    //if ticket1 goto label1:
     //  blah
-    //  goto control2:
-    //control1
+    //  goto label2:
+    //label1:
     //  blah
-    //control2:
+    //label2:
 
     stmtAssignment(ticket1, "LtS(" + env.findVariableEnv(a) + " 1)" );
-    stmtIfGoto(ticket1, control1);
+    stmtIfGoto(ticket1, label1);
 
     pushIndentation();
     n.f4.accept(this);
-    stmtGoto(control2);
+    stmtGoto(label2);
     popIndentation();
 
-    stmtLabel(control1);
+    stmtLabel(label1);
     pushIndentation();
     n.f6.accept(this);
     popIndentation();
 
-    stmtLabel(control2);
+    stmtLabel(label2);
 
     return _ret;
   }
@@ -411,28 +411,20 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   public Integer visit(WhileStatement n) {
     Integer _ret=null;
 
-    int control1 = env.getLabel();
-    int control2 = env.getLabel();
+    int label1 = env.getLabel("while");
+    int label2 = env.getLabel("while");
 
     //Initial conditional tag
-    stmtLabel(control1);
+    stmtLabel(label1);
     //Jump to end
     int a = n.f2.accept(this);
-    stmtIf0Goto(a, control2);
+    stmtIf0Goto(a, label2);
     //Main Loop code
     n.f4.accept(this);
     //Jump to conditional
-    stmtGoto(control1);
-    /*
-    indentVapor();
-    System.out.println("if0 " + env.findVariableEnv(a) + " goto :" + env.findVariableEnv(control2));
-    n.f3.accept(this);
+    stmtGoto(label1);
 
-    indentVapor();
-    System.out.println("goto :" + env.findVariableEnv(control1));
-    */
-
-    stmtLabel(control2);
+    stmtLabel(label2);
 
     return _ret;
   }
@@ -479,8 +471,8 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //Pseudocode
     //ticket1 = LtS(a 1)
     //ticket2 = LtS(b 1)
-    //if ticket1 goto :control1
-    //  if ticket2 goto :control1
+    //if ticket1 goto :label1
+    //  if ticket2 goto :label2
     //    ticket3 = 1
     //goto: control2
     //control1: 
@@ -491,26 +483,25 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     int ticket1 = env.getTemporary();
     int ticket2 = env.getTemporary();
     int ticket3 = env.getTemporary();
-    int control1 = env.getLabel();
-    int control2 = env.getLabel();
+    int label1 = env.getLabel("label");
+    int label2 = env.getLabel("label");
     stmtAssignment(ticket1, "LtS(" + env.findVariableEnv(a) + " 1)");
     stmtAssignment(ticket2, "LtS(" + env.findVariableEnv(b) + " 1)");
 
-    stmtIfGoto(ticket1, control1);
+    stmtIfGoto(ticket1, label1);
     pushIndentation();
-    stmtIfGoto(ticket2, control1);
+    stmtIfGoto(ticket2, label2);
     pushIndentation();
     stmtAssignment(ticket3, "1");
     popIndentation();
     popIndentation();
-    stmtGoto(control2);
-    stmtLabel(control1);
+    stmtGoto(label2);
+    stmtLabel(label1);
     pushIndentation();
     stmtAssignment(ticket3, "0");
     popIndentation();
-    stmtLabel(control2);
-
-     
+    stmtLabel(label2);
+    
     _ret = ticket3;
     return _ret;
   }
@@ -600,13 +591,13 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     int ticket3 = env.getTemporary();
     int ticket4 = env.getTemporary();
     int ticket5 = env.getTemporary();
-    int control1 = env.getLabel();
+    int bound1 = env.getLabel("bounds");
        
 
     //pseudocode
     //ticket1 = [a]
     //ticket2 = LtS(b ticket1) // b < ticket1
-    //if ticket2 goto: control1
+    //if ticket2 goto: bounds1
     //  Error("Array out of bounds")
     //control1:
     //ticket3 = b * 4
@@ -615,11 +606,11 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     
     stmtMemoryAccess(ticket1, env.findVariableEnv(a));
     stmtAssignment(ticket2, "Lt(" + env.findVariableEnv(b) + " " + env.findVariableEnv(ticket1) + ")");
-    stmtIfGoto(ticket2, control1);
+    stmtIfGoto(ticket2, bound1);
     pushIndentation();
     stmtPrint("Error(\"array index out of bounds\")");
     popIndentation();
-    stmtLabel(control1);
+    stmtLabel(bound1);
     stmtAssignment(ticket3, "MulS(" + env.findVariableEnv(b) + " 4)");
     stmtAssignment(ticket4, "Add(" + env.findVariableEnv(a) + " " + env.findVariableEnv(ticket3) + ")");
     stmtMemoryAccess(ticket5, env.findVariableEnv(ticket4) + "+4");
@@ -659,16 +650,16 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     int a = n.f0.accept(this);
     //Error Checking Pseudocode:
     ////////////////////
-    //if a goto control1
+    //if a goto null1
     //  Error("null pointer")
-    //control1:
-    int control1 = env.getLabel();
+    //null1:
+    int null1 = env.getLabel("null");
 
-    stmtIfGoto(a, control1);
+    stmtIfGoto(a, null1);
     pushIndentation();
     stmtPrint("Error(\"null pointer\")");
     popIndentation();
-    stmtLabel(control1);
+    stmtLabel(null1);
     
 
 
