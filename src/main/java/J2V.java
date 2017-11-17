@@ -226,7 +226,28 @@ class Helper{
 		return null; 
 	}
 
+	//find object in given class and all super classes
+	public static GType getObject(String obj_name, ClassType curr_class){
+			ClassType tmp = curr_class.super_class;
+			int index; 
 
+			//Find obj in current class fields 
+			index = curr_class.fields_name.indexOf(obj_name);
+			if ( index != -1 ){
+				return curr_class.fields.get(index);
+			}
+			
+			//check fields from super class
+			while(tmp!= null){
+				index = tmp.fields_name.indexOf(obj_name);
+				if ( index != -1 ){
+					return tmp.fields.get(index);
+				}
+				tmp = tmp.super_class;
+			}
+			return null; 
+		}
+		
 	// check a = b (Type a >= Type b)
 	public static boolean isCompatibleTypes(GType a, GType b) {
 		if (a instanceof IntType && b instanceof IntType) {

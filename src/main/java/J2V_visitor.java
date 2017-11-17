@@ -58,7 +58,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     n.f14.accept(this);
     n.f15.accept(this);
 
-
     indentVapor();
     System.out.println("ret");
 
@@ -312,7 +311,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     if (v1.class_name != null ) {
       v1.class_name = v2.class_name;
     }
-    
     
     stmtAssignment(ticket, env.findVariableEnv(a)); 
     stmtPrint(env.findVariableEnvStrict(ticket) + " = " + env.findVariableEnv(a));

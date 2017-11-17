@@ -49,24 +49,24 @@ public class VaporEnv {
     ticket = getIdentifier("this");
     variable_map.get(ticket).class_name = curr_class.class_name; 
 
-    //getParentTypes(curr_class, variable_map);
-  }
-
-  /*
-  void getParentTypes(J2VClassLayout j, HashMap<Integer, VaporValue> h) {
-    int ticket;
-    for (String id : j.member_offsets.keySet()) {
-      ticket = getIdentifier(id);
-      variable_map.get(ticket).class_name = j.member_types.get(id);
-    }
-
-    if (j.parent != null) {
-      getParentTypes(layout.get(j.parent), h);
+    for (int i = 0; i < curr_class.fields.size(); i++) {
+    	String obj_name = curr_class.fields_name.get(i);
+    	ticket = getIdentifier(obj_name);
+    	variable_map.get(ticket).class_name = Helper.getObject(obj_name, curr_class).toString();
     }
   }
-  */
-  
+
   void endParseMethod() {
+	  System.out.println("Variable Map");
+	  for (Integer ticket: variable_map.keySet()){
+          String Vapor = variable_map.get(ticket).identifier;  
+          System.out.println(ticket + " " + Vapor);  
+      } 
+	  System.out.println("Identifier Map");
+	  for ( String idf: identifier_map.keySet()){
+          Integer ticket = identifier_map.get(idf);  
+          System.out.println(idf + " " + ticket.toString() );  
+      } 
     variable_map = null;
     identifier_map = null;
     counter_var = 0;
@@ -75,7 +75,6 @@ public class VaporEnv {
 
 
   //Methods to support environment variable operations
-  ///////////////////////
 
   int obtainVarNumber() {
     counter_var += 1;
@@ -91,9 +90,9 @@ public class VaporEnv {
     counter_label += 1;
     return counter_label - 1;
   }
+  
 
-  //Methods to handle the adding of new identifiers
-  ///////////////////
+  //Add new identifier to registers
   int getIdentifier(String identifier) {
 
     Integer out = identifier_map.get(identifier);
@@ -130,6 +129,7 @@ public class VaporEnv {
     variable_map.put(ticket, v);
     return ticket;
   }
+  
 
   String findVariableEnv(int ticket) {
     String s = variable_map.get(ticket).identifier;
@@ -160,31 +160,7 @@ public class VaporEnv {
     }
     return s;
   }
-
-  /*
-  int findMemberOffset(String class_name, String member_name) {
-//    J2VClassLayout j = layout.get(class_name);
-    return layout.get(class_name).member_offsets.get(member_name);
-  }*/
-
-
-  //////////////////////
 }
-
-/*
-class J2VClassLayout {
-  String id;
-  String parent;
-  int size;
-
-  Vector<String> function_list;
-  Vector<String> member_list;
-  HashMap<String, Integer> virtual_table;
-  HashMap<String, Integer> member_offsets;
-  HashMap<String, String> member_types;
-  HashMap<String, String> method_types;
-}
-*/
 
 class VaporValue {
   String identifier;
