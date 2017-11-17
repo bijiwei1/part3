@@ -30,7 +30,7 @@ public class J2V {
 			VaporEnv ve = new VaporEnv(classList);
 			
 			//Print Class and Methods
-			Vapor.class_method(classList); 
+			Helper.class_method(classList); 
 			
 			J2V_visitor jv = new J2V_visitor(ve);
 			root.accept(jv);
@@ -38,19 +38,6 @@ public class J2V {
 		}catch (ParseException e) {
 			Helper.exit("Parse Failed");
 		}
-	}
-}
-
-class Vapor{
-	public static void class_method(List<ClassType> classList){
-		for (ClassType ct : classList){
-			System.out.println("const vmt_" + ct.class_name);
-			for (Method m : ct.methods){
-				System.out.println("  :" + ct.class_name + "." + m.method_name);
-			}
-		}
-		System.out.println("");
-		return; 
 	}
 }
 
@@ -294,6 +281,20 @@ class Helper{
 
 		return true; 
 
+	}
+	
+	
+	public static void class_method(List<ClassType> classList){
+		for (ClassType ct : classList){
+			if (!ct.isMain) {
+				System.out.println("const vmt_" + ct.class_name);
+				for (Method m : ct.methods){
+					System.out.println("  :" + ct.class_name + "." + m.method_name);
+				}
+			}
+		}
+		System.out.println("");
+		return; 
 	}
 
 }

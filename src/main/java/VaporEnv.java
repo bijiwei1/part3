@@ -9,9 +9,9 @@ public class VaporEnv {
   
   //Used only in second pass
   int indentation_level;
-  int counter_label;
-  int counter_temp;
-  int counter_var;
+  int label_num;
+  int tmp_num;
+  int var_num;
   HashMap<Integer, VaporValue> variable_map;
   HashMap<String, Integer> identifier_map;
   Vector<Integer> call_parameters;
@@ -21,13 +21,12 @@ public class VaporEnv {
     this.classList = classList;
 
     indentation_level = 0;
-    counter_label = 0; //Only one instance of a label allowed in the entire program woooot
-    counter_temp = 0;
-    counter_var = 0;
+    label_num = 0; //Only one instance of a label allowed in the entire program woooot
+    tmp_num = 0;
+    var_num = 0;
     variable_map = null;
     identifier_map = null;
 
-    call_parameters = new Vector<Integer>();
     call_list = new Stack<Vector<Integer>>();
 
   }
@@ -43,8 +42,8 @@ public class VaporEnv {
   void startParseMethod() {
     variable_map = new HashMap<Integer, VaporValue>();
     identifier_map = new HashMap<String, Integer>();
-    counter_var = 0;
-    counter_temp = 0;
+    var_num = 0;
+    tmp_num = 0;
     int ticket;
     ticket = getIdentifier("this");
     variable_map.get(ticket).class_name = curr_class.class_name; 
@@ -69,26 +68,26 @@ public class VaporEnv {
       } 
     variable_map = null;
     identifier_map = null;
-    counter_var = 0;
-    counter_temp = 0;
+    var_num = 0;
+    tmp_num = 0;
   }
 
 
   //Methods to support environment variable operations
 
   int obtainVarNumber() {
-    counter_var += 1;
-    return counter_var - 1;
+	  var_num += 1;
+    return var_num - 1;
   }
 
   int obtainTempNumber() {
-    counter_temp += 1;
-    return counter_temp - 1;
+	  tmp_num += 1;
+    return tmp_num - 1;
   }
 
   int obtainLabelNumber() {
-    counter_label += 1;
-    return counter_label - 1;
+	  label_num += 1;
+    return label_num - 1;
   }
   
 
@@ -113,9 +112,9 @@ public class VaporEnv {
   
   int getTemporary() {
     int ticket = obtainVarNumber();
-    int temp = obtainTempNumber();
+    int tmp = obtainTempNumber();
 
-    VaporValue v = new VaporValue("t." + String.valueOf(temp)); 
+    VaporValue v = new VaporValue("t." + tmp); 
     variable_map.put(ticket, v);
     return ticket;
   }
@@ -123,9 +122,9 @@ public class VaporEnv {
 
   int getLabel() {
     int ticket = obtainVarNumber();
-    int temp = obtainLabelNumber();
+    int tmp = obtainLabelNumber();
 
-    VaporValue v = new VaporValue("control" + String.valueOf(temp));  
+    VaporValue v = new VaporValue("control" + tmp);  
     variable_map.put(ticket, v);
     return ticket;
   }
@@ -138,7 +137,7 @@ public class VaporEnv {
     
     if (curr_class.fields_name.contains(s)) {
     	offset = curr_class.fields_name.indexOf(s)+4;
-    	t = "[this+" + String.valueOf(offset) + "]";
+    	t = "[this+" + offset + "]";
     	ticket = getTemporary();
     	s = findVariableEnv(ticket);
     	System.out.println(s + " = " + t);
@@ -156,7 +155,7 @@ public class VaporEnv {
     
     if (curr_class.fields_name.contains(s)) {
     	offset = curr_class.fields_name.indexOf(s)+4;
-    	 s = "[this+" + String.valueOf(offset) + "]";
+    	 s = "[this+" + offset + "]";
     }
     return s;
   }

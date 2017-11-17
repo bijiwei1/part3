@@ -354,10 +354,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     stmtMemoryAssignment(ticket5, env.findVariableEnv(c));
 
     _ret = c;
-  
-
-
-
     return _ret;
   }
 
@@ -864,7 +860,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     VaporValue v = env.variable_map.get(ticket);
     v.class_name = class_name;
 
-    stmtAssignment(ticket, "HeapAllocZ(" + curr_class.fields.size()*4 + ")");
+    stmtAssignment(ticket, "HeapAllocZ(" + curr_class.methods.size()*4 + ")");
     stmtMemoryAssignment(ticket, ":vmt_" + curr_class.toString());
 
     /*
