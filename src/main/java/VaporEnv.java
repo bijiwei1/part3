@@ -70,7 +70,7 @@ public class VaporEnv {
 		}
 		//getParentTypes(variable_map);
 		
-		//add method field to var_map and identifier_map
+		//add method variables to var_map and identifier_map
 		if (!method_name.equals("main")) {
 			Method curr_method = Helper.getMethod(method_name, curr_class);
 			for (int i = 0; i < curr_method.vars.size(); i++) {
@@ -79,8 +79,8 @@ public class VaporEnv {
 				VaporValue v = new VaporValue(method_var);
 				variable_map.put(ticket, v);
 				identifier_map.put(method_var, ticket);
-				System.out.println("Add fields to variable map" + method_var);
-				variable_map.get(ticket).class_name = curr_method.args.get(i).toString();
+				System.out.println("Add method variable to variable map: " + method_var);
+				variable_map.get(ticket).class_name = curr_method.vars.get(i).toString();
 			}
 		}
 	}
