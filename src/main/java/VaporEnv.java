@@ -48,7 +48,7 @@ public class VaporEnv {
 		curr_class = null;
 	}
 
-	void startParseMethod() {
+	void startParseMethod(String method_name) {
 		variable_map = new HashMap<Integer, VaporValue>();
 		identifier_map = new HashMap<String, Integer>();
 		var_num = 0;
@@ -62,7 +62,13 @@ public class VaporEnv {
 			ticket = getIdentifier(obj_name, false);
 			variable_map.get(ticket).class_name = Helper.getObject(obj_name, curr_class).toString();
 		}
-
+		
+		Method curr_method = Helper.getMethod(method_name, curr_class);
+		for (int i = 0; i < curr_method.args.size(); i++) {
+			String param_name = curr_method.args_name.get(i);
+			ticket = getIdentifier(param_name, false);
+			variable_map.get(ticket).class_name = curr_method.args.get(i).toString();
+		}
 	}
 
 	void endParseMethod() {

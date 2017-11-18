@@ -49,7 +49,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
 
     String curr_class = n.f1.f0.toString();
     env.startParseClass(curr_class);
-    env.startParseMethod();
+    //env.startParseMethod();
 
     stmtMethodParam(curr_class, "main");
 
@@ -62,7 +62,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     System.out.println("ret");
 
     popIndentation();
-    env.endParseMethod();
+   // env.endParseMethod();
     env.endParseClass();
 
 
@@ -161,7 +161,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     String method_name = n.f2.f0.toString();
     String class_name = env.curr_class.class_name;
 
-    env.startParseMethod();
+    env.startParseMethod(method_name);
     stmtMethodParam(class_name, method_name);
     n.f4.accept(this);
 
@@ -301,6 +301,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     Integer _ret=null;
     String identifier = n.f0.f0.toString();
     Integer a = n.f2.accept(this);
+    
     int ticket = env.getIdentifier(identifier, false);
 
     VaporValue v1 = env.variable_map.get(ticket);

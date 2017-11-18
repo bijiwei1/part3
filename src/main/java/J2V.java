@@ -213,7 +213,7 @@ class Helper{
 		return null; 
 	}
 
-	//find object in given class and all super classes
+	//find fields in given class and all super classes
 	public static GType getObject(String obj_name, ClassType curr_class){
 			ClassType tmp = curr_class.super_class;
 			int index; 
@@ -233,7 +233,9 @@ class Helper{
 				tmp = tmp.super_class;
 			}
 			return null; 
-		}
+	}
+
+	
 		
 	// check a = b (Type a >= Type b)
 	public static boolean isCompatibleTypes(GType a, GType b) {
