@@ -63,11 +63,13 @@ public class VaporEnv {
 			variable_map.get(ticket).class_name = Helper.getObject(obj_name, curr_class).toString();
 		}
 		
+		if (!method_name.equals("main")) {
 		Method curr_method = Helper.getMethod(method_name, curr_class);
 		for (int i = 0; i < curr_method.args.size(); i++) {
 			String param_name = curr_method.args_name.get(i);
 			ticket = getIdentifier(param_name, false);
 			variable_map.get(ticket).class_name = curr_method.args.get(i).toString();
+		}
 		}
 	}
 
