@@ -48,12 +48,14 @@ public class VaporEnv {
 	}
 
 	void startParseMethod() {
+		
 		variable_map = new HashMap<Integer, VaporValue>();
 		identifier_map = new HashMap<String, Integer>();
 		var_num = 0;
 		tmp_num = 0;
 		int ticket;
 		ticket = getIdentifier("this");
+		
 		variable_map.get(ticket).class_name = curr_class.class_name;
 
 		//load class field
@@ -64,7 +66,7 @@ public class VaporEnv {
 		}
 		
 		//add method field to var_map and identifier_map
-		if (!curr_class.equals("main")) {
+		if (!curr_class.class_name.equals("main")) {
 			Method curr_method = Helper.getMethod(method_name, curr_class);
 			for (int i = 0; i < curr_method.vars.size(); i++) {
 				String method_var = curr_method.vars_name.get(i);
@@ -129,7 +131,7 @@ public class VaporEnv {
 		int ticket = 0;
 		
 		//if identifier is method local variables
-		if (!method_name.equals("main")) {
+		if (method_name.equals("main")) {
 			Method curr_method = Helper.getMethod(method_name, curr_class);
 			for (int i = 0; i < curr_method.vars.size(); i++) {
 				if (curr_method.vars_name.get(i).equals(identifier)) {
@@ -147,8 +149,6 @@ public class VaporEnv {
 		}else {
 			_ret = out;
 		}
-			
-		
 		return _ret;
 	}
 
