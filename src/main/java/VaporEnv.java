@@ -12,13 +12,11 @@ public class VaporEnv {
 	int[] label_num = new int[5]; // 0 - if_else, 1 - while, 2 - null, 3 - bounds, 4 - other labels
 	int tmp_num;
 	int var_num;
-	int arg_num;
+	//int arg_num;
 	HashMap<Integer, VaporValue> variable_map;
 	HashMap<String, Integer> identifier_map;
-	// Vector<Integer> call_parameters;
 	List<Integer> call_parameters_ticket;
 	List<String> call_parameters_const;
-	// Stack<List<Integer>> call_list;
 	String const_num;
 
 	public VaporEnv(List<ClassType> classList) {
@@ -54,34 +52,30 @@ public class VaporEnv {
 		identifier_map = new HashMap<String, Integer>();
 		var_num = 0;
 		tmp_num = 0;
-		arg_num = 1000;
 		int ticket;
-		ticket = getIdentifier("this", false);
+		ticket = getIdentifier("this", method_name);
 		variable_map.get(ticket).class_name = curr_class.class_name;
 
 		for (int i = 0; i < curr_class.fields.size(); i++) {
 			String obj_name = curr_class.fields_name.get(i);
-			ticket = getIdentifier(obj_name, false);
+			ticket = getIdentifier(obj_name, method_name);
 			variable_map.get(ticket).class_name = Helper.getObject(obj_name, curr_class).toString();
 		}
 		
+		//add method parameters var_map and identifier_map
 		if (!method_name.equals("main")) {
-<<<<<<< HEAD
-		Method curr_method = Helper.getMethod(method_name, curr_class);
-		for (int i = 0; i < curr_method.args.size(); i++) {
-			String param_name = curr_method.args_name.get(i);
-			ticket = getIdentifier(param_name, true);
-			variable_map.get(ticket).class_name = curr_method.args.get(i).toString();
-		}
-=======
 			Method curr_method = Helper.getMethod(method_name, curr_class);
 			for (int i = 0; i < curr_method.args.size(); i++) {
 				String param_name = curr_method.args_name.get(i);
-				ticket = getIdentifier(param_name, true);
+				ticket = 1000 + i;
+				VaporValue v = new VaporValue(param_name);
+				variable_map.put(ticket, v);
+				identifier_map.put(param_name, ticket);
+				System.out.println("Add arg to variable map" + param_name);
 				variable_map.get(ticket).class_name = curr_method.args.get(i).toString();
 			}
->>>>>>> 68c6c4aeda725452697840cbecbe27773b470cd4
 		}
+		
 	}
 
 	void endParseMethod() {
@@ -107,11 +101,6 @@ public class VaporEnv {
 		tmp_num += 1;
 		return tmp_num - 1;
 	}
-	
-	int addArgNum() {
-		arg_num += 1;
-		return arg_num - 1;
-	}
 
 	int addLabel(String type) {
 
@@ -133,38 +122,38 @@ public class VaporEnv {
 		}
 	}
 
-	int getIdentifier(String identifier) {
+	int getIdentifier(String identifier, String method_name) {
 
 		Integer out = identifier_map.get(identifier);
 		int _ret;
 		int ticket = 0;
-
-		//Check whether the identifier is method parameter
 		
-
+		//if identifier is args
+		if (!method_name.equals("main")) {
+			Method curr_method = Helper.getMethod(method_name, curr_class);
+			for (int i = 0; i < curr_method.args.size(); i++) {
+				if (curr_method.args_name.get(i).equals(identifier)) {
+					//ticket = addArgNum(); 
+					//VaporValue v = new VaporValue(identifier);
+					//variable_map.put(ticket, v);
+					//identifier_map.put(identifier, ticket);
+					//System.out.println("Add arg to variable map" + identifier);
+					return 1000 + i;
+				}
+			}
+		}
+		
 		if (out == null) {
 			ticket = addVarNum();
 			VaporValue v = new VaporValue(identifier);
 			variable_map.put(ticket, v);
 			identifier_map.put(identifier, ticket);
 			_ret = ticket;
-<<<<<<< HEAD
-		} 
-
-
-			ticket = var_num + 1000; // arg used idx after 1000
-=======
-		} else if (out == null && isArg) {
-			ticket = addArgNum(); 
->>>>>>> 68c6c4aeda725452697840cbecbe27773b470cd4
-			VaporValue v = new VaporValue(identifier);
-			variable_map.put(ticket, v);
-			identifier_map.put(identifier, ticket);
-			System.out.println("Add arg to variable map" + identifier);
-			_ret = ticket;
-		} else {
+		}else {
 			_ret = out;
 		}
+			
+		
 		return _ret;
 	}
 

@@ -5,6 +5,7 @@ import java.util.*;
 public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   VaporEnv env;
   List<ClassType> classList; 
+  private String method_name; 
   
   public J2V_visitor(VaporEnv env) {
     this.env = env;
@@ -158,7 +159,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     Integer _ret=null;
 
     System.out.println("");
-    String method_name = n.f2.f0.toString();
+    method_name = n.f2.f0.toString();
     String class_name = env.curr_class.class_name;
 
     env.startParseMethod(method_name);
@@ -204,7 +205,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     String type = obj.toString();
     
     String arg = n.f1.f0.toString();
-    int ticket = env.getIdentifier(arg, true);
+    int ticket = env.getIdentifier(arg, method_name);
     env.variable_map.get(ticket).class_name = type; 
 
     return _ret;
@@ -302,7 +303,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     String identifier = n.f0.f0.toString();
     Integer a = n.f2.accept(this);
     
-    int ticket = env.getIdentifier(identifier, false);
+    int ticket = env.getIdentifier(identifier, method_name);
 
     VaporValue v1 = env.variable_map.get(ticket);
     if (a!= -1) {
@@ -880,7 +881,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    * f0 -> <IDENTIFIER>
    */
   public Integer visit(Identifier n) {
-    Integer _ret = env.getIdentifier(n.f0.toString(), false);
+    Integer _ret = env.getIdentifier(n.f0.toString(), method_name);
     return _ret;
   }
 
@@ -936,8 +937,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
 
     VaporValue v = env.variable_map.get(ticket);
     v.class_name = class_name;
-
-    int offset = 1;
     
     stmtAssignment(ticket, "HeapAllocZ(" + (curr_class.fields.size()+1) * 4 + ")");
     stmtMemoryAssignment(ticket, ":vmt_" + curr_class.toString());
