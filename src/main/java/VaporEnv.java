@@ -56,6 +56,7 @@ public class VaporEnv {
 		ticket = getIdentifier("this");
 		variable_map.get(ticket).class_name = curr_class.class_name;
 
+		//load class field
 		for (int i = 0; i < curr_class.fields.size(); i++) {
 			String obj_name = curr_class.fields_name.get(i);
 			ticket = getIdentifier(obj_name);
@@ -63,7 +64,7 @@ public class VaporEnv {
 		}
 		
 		//add method field to var_map and identifier_map
-		if (!method_name.equals("main")) {
+		if (!curr_class.equals("main")) {
 			Method curr_method = Helper.getMethod(method_name, curr_class);
 			for (int i = 0; i < curr_method.vars.size(); i++) {
 				String method_var = curr_method.vars_name.get(i);

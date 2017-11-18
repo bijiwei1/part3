@@ -49,6 +49,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
 
     //String curr_class = n.f1.f0.toString();
     String curr_class = "main";
+    env.method_name = "main";
     env.startParseClass(curr_class);
     env.startParseMethod();
 
@@ -729,10 +730,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
 
     int ticket1 = env.getTemporary();
     int ticket2 = env.getTemporary();
-    //int ticket2 = env.checkVar();
-    //if (checkVar() == -1) {
-   // 	ticket2 = env.getTemporary();
-    //}
     
     String method_name = n.f2.f0.toString();
     String class_name;
@@ -753,25 +750,13 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //to get the function name in ticket1
     stmtMemoryAccess(ticket1, env.findVariableEnv(a));
     stmtMemoryAccess(ticket1, env.findVariableEnv(ticket1) + "+" + offset * 4);
-      
-    //env.call_list.push(env.call_parameters_ticket);
-    //env.call_parameters_ticket = new ArrayList<Integer>();
+    
     env.clearCallParam();
     
     n.f4.accept(this);
 
     String parameters = "";
 
-    /*
-    for (Integer ticket_param : env.call_parameters_ticket) {
-      parameters += " ";
-      if (ticket_param == -1) {
-    	  int idx = env.call_parameters_ticket.indexOf(ticket_param);
-    	  parameters += env.call_parameters_const.get(idx);
-      }else {
-    	  parameters += env.findVariableEnv(ticket_param);
-      }
-    }*/
     for (int i = 0; i < env.call_parameters_ticket.size(); i ++) {
     	parameters += " ";
     	Integer ticket = env.call_parameters_ticket.get(i);
