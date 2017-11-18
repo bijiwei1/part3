@@ -174,6 +174,7 @@ public class VaporEnv {
 			v = new VaporValue("if" + tmp + "_end");
 		} else if (type.equals("while")) {
 			v = new VaporValue("while" + tmp + "_top");
+			variable_map.put(ticket, v);
 			v = new VaporValue("while" + tmp + "_end");
 			addVarNum();
 		} else if (type.equals("null")) {
@@ -185,6 +186,7 @@ public class VaporEnv {
 		}
 
 		variable_map.put(ticket, v);
+		
 		return ticket;
 	}
 
