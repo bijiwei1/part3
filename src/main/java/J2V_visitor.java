@@ -49,7 +49,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
 
     String curr_class = n.f1.f0.toString();
     env.startParseClass(curr_class);
-    //env.startParseMethod();
+    env.startParseMethod("main");
 
     stmtMethodParam(curr_class, "main");
 
@@ -62,7 +62,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     System.out.println("ret");
 
     popIndentation();
-   // env.endParseMethod();
+    env.endParseMethod();
     env.endParseClass();
 
 
