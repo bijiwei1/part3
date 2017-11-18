@@ -424,11 +424,14 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //Jump to end
     int a = n.f2.accept(this);
     stmtIf0Goto(a, label2);
+    
+    pushIndentation();
     //Main Loop code
     n.f4.accept(this);
+    popIndentation();
+    
     //Jump to conditional
     stmtGoto(label1);
-
     stmtLabel(label2);
 
     return _ret;
