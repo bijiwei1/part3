@@ -130,16 +130,6 @@ public class VaporEnv {
 		int _ret;
 		int ticket = 0;
 		
-		//if identifier is method local variables
-		if (method_name.equals("main")) {
-			Method curr_method = Helper.getMethod(method_name, curr_class);
-			for (int i = 0; i < curr_method.vars.size(); i++) {
-				if (curr_method.vars_name.get(i).equals(identifier)) {
-					return 1000 + i;
-				}
-			}
-		}
-		
 		if (out == null) {
 			ticket = addVarNum();
 			VaporValue v = new VaporValue(identifier);
