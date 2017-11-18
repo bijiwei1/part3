@@ -1,5 +1,3 @@
-import visitor.*;
-import syntaxtree.*;
 import java.util.*;
 
 public class VaporEnv {
@@ -62,20 +60,19 @@ public class VaporEnv {
 			variable_map.get(ticket).class_name = Helper.getObject(obj_name, curr_class).toString();
 		}
 		
-		//add method parameters var_map and identifier_map
+		//add method field to var_map and identifier_map
 		if (!method_name.equals("main")) {
 			Method curr_method = Helper.getMethod(method_name, curr_class);
-			for (int i = 0; i < curr_method.args.size(); i++) {
-				String param_name = curr_method.args_name.get(i);
+			for (int i = 0; i < curr_method.vars.size(); i++) {
+				String method_var = curr_method.vars_name.get(i);
 				ticket = 1000 + i;
-				VaporValue v = new VaporValue(param_name);
+				VaporValue v = new VaporValue(method_var);
 				variable_map.put(ticket, v);
-				identifier_map.put(param_name, ticket);
-				System.out.println("Add arg to variable map" + param_name);
+				identifier_map.put(method_var, ticket);
+				System.out.println("Add fields to variable map" + method_var);
 				variable_map.get(ticket).class_name = curr_method.args.get(i).toString();
 			}
 		}
-		
 	}
 
 	void endParseMethod() {
@@ -128,16 +125,11 @@ public class VaporEnv {
 		int _ret;
 		int ticket = 0;
 		
-		//if identifier is args
+		//if identifier is method local variables
 		if (!method_name.equals("main")) {
 			Method curr_method = Helper.getMethod(method_name, curr_class);
-			for (int i = 0; i < curr_method.args.size(); i++) {
-				if (curr_method.args_name.get(i).equals(identifier)) {
-					//ticket = addArgNum(); 
-					//VaporValue v = new VaporValue(identifier);
-					//variable_map.put(ticket, v);
-					//identifier_map.put(identifier, ticket);
-					//System.out.println("Add arg to variable map" + identifier);
+			for (int i = 0; i < curr_method.vars.size(); i++) {
+				if (curr_method.vars_name.get(i).equals(identifier)) {
 					return 1000 + i;
 				}
 			}
