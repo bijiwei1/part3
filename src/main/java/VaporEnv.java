@@ -175,6 +175,12 @@ public class VaporEnv {
 		if (ticket == -1) {
 			return const_num;
 		}
+		
+		if (ticket >= 1000) {
+			String s = variable_map.get(ticket).identifier;
+			return s;
+		}
+		
 		String s = variable_map.get(ticket).identifier;
 		String t;
 		int offset = 0;
