@@ -301,7 +301,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     Integer _ret=null;
     String identifier = n.f0.f0.toString();
     Integer a = n.f2.accept(this);
-    int ticket = env.getIdentifier(identifier);
+    int ticket = env.getIdentifier(identifier, false);
 
     VaporValue v1 = env.variable_map.get(ticket);
     if (a!= -1) {
