@@ -67,7 +67,7 @@ public class VaporEnv {
 		Method curr_method = Helper.getMethod(method_name, curr_class);
 		for (int i = 0; i < curr_method.args.size(); i++) {
 			String param_name = curr_method.args_name.get(i);
-			ticket = getIdentifier(param_name, false);
+			ticket = getIdentifier(param_name, true);
 			variable_map.get(ticket).class_name = curr_method.args.get(i).toString();
 		}
 		}
@@ -125,19 +125,24 @@ public class VaporEnv {
 		}
 	}
 
-	int getIdentifier(String identifier, boolean isArg) {
+	int getIdentifier(String identifier) {
 
 		Integer out = identifier_map.get(identifier);
 		int _ret;
 		int ticket = 0;
 
-		if (out == null && !isArg) {
+		//Check whether the identifier is method parameter
+		
+
+		if (out == null) {
 			ticket = addVarNum();
 			VaporValue v = new VaporValue(identifier);
 			variable_map.put(ticket, v);
 			identifier_map.put(identifier, ticket);
 			_ret = ticket;
-		} else if (out == null && isArg) {
+		} 
+
+
 			ticket = var_num + 1000; // arg used idx after 1000
 			VaporValue v = new VaporValue(identifier);
 			variable_map.put(ticket, v);

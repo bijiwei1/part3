@@ -938,11 +938,8 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     v.class_name = class_name;
 
     int offset = 1;
-    if (curr_class.methods.size() > 1) {
-    	offset = curr_class.methods.size() - 1 ;
-    }
     
-    stmtAssignment(ticket, "HeapAllocZ(" + offset * 4 + ")");
+    stmtAssignment(ticket, "HeapAllocZ(" + (curr_class.fields.size()+1) * 4 + ")");
     stmtMemoryAssignment(ticket, ":vmt_" + curr_class.toString());
 
     _ret = ticket;
