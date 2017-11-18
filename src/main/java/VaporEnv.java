@@ -123,7 +123,7 @@ public class VaporEnv {
 			label_num[0] += 1;
 			return label_num[0] - 1;
 		} else if (type.equals("while")) {
-			label_num[1] += 1;
+			label_num[1] += 2;
 			return label_num[1] - 1;
 		} else if (type.equals("null")) {
 			label_num[2] += 1;
@@ -175,6 +175,7 @@ public class VaporEnv {
 		} else if (type.equals("while")) {
 			v = new VaporValue("while" + tmp + "_top");
 			v = new VaporValue("while" + tmp + "_end");
+			addVarNum();
 		} else if (type.equals("null")) {
 			v = new VaporValue("null" + tmp);
 		} else if (type.equals("bounds")) {
