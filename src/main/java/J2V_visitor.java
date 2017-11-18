@@ -4,8 +4,7 @@ import java.util.*;
 
 public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   VaporEnv env;
-  List<ClassType> classList; 
-  private String method_name; 
+  List<ClassType> classList;  
   
   public J2V_visitor(VaporEnv env) {
     this.env = env;
@@ -48,9 +47,10 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   public Integer visit(MainClass n) {
     Integer return_value=null;
 
-    String curr_class = n.f1.f0.toString();
+    //String curr_class = n.f1.f0.toString();
+    String curr_class = "main";
     env.startParseClass(curr_class);
-    env.startParseMethod("main");
+    env.startParseMethod();
 
     stmtMethodParam(curr_class, "main");
 
@@ -159,11 +159,11 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     Integer _ret=null;
 
     System.out.println("");
-    method_name = n.f2.f0.toString();
+    env.method_name = n.f2.f0.toString();
     String class_name = env.curr_class.class_name;
 
-    env.startParseMethod(method_name);
-    stmtMethodParam(class_name, method_name);
+    env.startParseMethod();
+    stmtMethodParam(class_name, env.method_name);
     n.f4.accept(this);
 
     pushIndentation();
@@ -206,7 +206,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     String param = n.f1.f0.toString();
     
     System.out.printf(" " + param);
-    int ticket = env.getIdentifier(param, method_name);
+    int ticket = env.getIdentifier(param);
     env.variable_map.get(ticket).class_name = type;
 
     return _ret;
@@ -304,7 +304,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     String identifier = n.f0.f0.toString();
     Integer a = n.f2.accept(this);
     
-    int ticket = env.getIdentifier(identifier, method_name);
+    int ticket = env.getIdentifier(identifier);
 
     VaporValue v1 = env.variable_map.get(ticket);
     if (a!= -1) {
@@ -718,11 +718,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
 
     int a = n.f0.accept(this);
     
-    //Error check the null pointer (except for this):
-    //if a goto null1
-    //  Error("null pointer")
-    //null1:
-    
     if (a != 0) {
     	int null1 = env.getLabel("null");
     	stmtIfGoto(a, null1);
@@ -734,7 +729,11 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
 
     int ticket1 = env.getTemporary();
     int ticket2 = env.getTemporary();
-
+    //int ticket2 = env.checkVar();
+    //if (checkVar() == -1) {
+   // 	ticket2 = env.getTemporary();
+    //}
+    
     String method_name = n.f2.f0.toString();
     String class_name;
     
@@ -784,8 +783,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     }
 
     stmtAssignment(ticket2, "call " + env.findVariableEnv(ticket1) + "(" + env.findVariableEnv(a) + parameters + ")");
-
-    //env.call_parameters_ticket = env.call_list.pop();
 
     VaporValue v = env.variable_map.get(ticket2);
     v.class_name = method_type;
@@ -882,7 +879,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    * f0 -> <IDENTIFIER>
    */
   public Integer visit(Identifier n) {
-    Integer _ret = env.getIdentifier(n.f0.toString(), method_name);
+    Integer _ret = env.getIdentifier(n.f0.toString());
     return _ret;
   }
 

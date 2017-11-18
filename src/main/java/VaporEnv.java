@@ -4,7 +4,8 @@ public class VaporEnv {
 
 	List<ClassType> classList;
 	ClassType curr_class;
-
+	String method_name;
+	
 	// Used only in second pass
 	int indentation_level;
 	int[] label_num = new int[5]; // 0 - if_else, 1 - while, 2 - null, 3 - bounds, 4 - other labels
@@ -16,6 +17,7 @@ public class VaporEnv {
 	List<Integer> call_parameters_ticket;
 	List<String> call_parameters_const;
 	String const_num;
+	
 
 	public VaporEnv(List<ClassType> classList) {
 		this.classList = classList;
@@ -45,18 +47,18 @@ public class VaporEnv {
 		curr_class = null;
 	}
 
-	void startParseMethod(String method_name) {
+	void startParseMethod() {
 		variable_map = new HashMap<Integer, VaporValue>();
 		identifier_map = new HashMap<String, Integer>();
 		var_num = 0;
 		tmp_num = 0;
 		int ticket;
-		ticket = getIdentifier("this", method_name);
+		ticket = getIdentifier("this");
 		variable_map.get(ticket).class_name = curr_class.class_name;
 
 		for (int i = 0; i < curr_class.fields.size(); i++) {
 			String obj_name = curr_class.fields_name.get(i);
-			ticket = getIdentifier(obj_name, method_name);
+			ticket = getIdentifier(obj_name);
 			variable_map.get(ticket).class_name = Helper.getObject(obj_name, curr_class).toString();
 		}
 		
@@ -119,7 +121,7 @@ public class VaporEnv {
 		}
 	}
 
-	int getIdentifier(String identifier, String method_name) {
+	int getIdentifier(String identifier) {
 
 		Integer out = identifier_map.get(identifier);
 		int _ret;
@@ -149,7 +151,15 @@ public class VaporEnv {
 		return _ret;
 	}
 
+	int checkVar(String identifier) {
+		Integer out = identifier_map.get(identifier);
+		if (out != null)
+			return out; 
+		return -1;
+	}
+	
 	int getTemporary() {
+		
 		int ticket = addVarNum();
 		int tmp = addTmpNum();
 
