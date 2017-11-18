@@ -204,8 +204,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     GType obj = GType.getType(n.f0, classList);
     String type = obj.toString();
     String param = n.f1.f0.toString();
-    
-    System.out.printf(" " + param);
+   
     int ticket = env.getIdentifier(param);
     env.variable_map.get(ticket).class_name = type;
 

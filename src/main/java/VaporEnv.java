@@ -79,7 +79,6 @@ public class VaporEnv {
 				VaporValue v = new VaporValue(method_var);
 				variable_map.put(ticket, v);
 				identifier_map.put(method_var, ticket);
-				System.out.println("Add method variable to variable map: " + method_var);
 				variable_map.get(ticket).class_name = curr_method.vars.get(i).toString();
 			}
 		}
