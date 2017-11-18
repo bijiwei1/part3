@@ -173,6 +173,7 @@ public class VaporEnv {
 		if (type.equals("if_else")) {
 			v = new VaporValue("if" + tmp + "_end");
 		} else if (type.equals("while")) {
+			v = new VaporValue("while" + tmp + "_top");
 			v = new VaporValue("while" + tmp + "_end");
 		} else if (type.equals("null")) {
 			v = new VaporValue("null" + tmp);

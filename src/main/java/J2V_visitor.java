@@ -417,7 +417,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     Integer _ret=null;
 
     int label1 = env.getLabel("while");
-    int label2 = env.getLabel("while");
+    int label2 = label1 + 1;
 
     //Initial conditional tag
     stmtLabel(label1);
