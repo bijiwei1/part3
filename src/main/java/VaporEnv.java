@@ -12,6 +12,7 @@ public class VaporEnv {
 	int[] label_num = new int[5]; // 0 - if_else, 1 - while, 2 - null, 3 - bounds, 4 - other labels
 	int tmp_num;
 	int var_num;
+	int arg_num;
 	HashMap<Integer, VaporValue> variable_map;
 	HashMap<String, Integer> identifier_map;
 	// Vector<Integer> call_parameters;
@@ -53,6 +54,7 @@ public class VaporEnv {
 		identifier_map = new HashMap<String, Integer>();
 		var_num = 0;
 		tmp_num = 0;
+		arg_num = 1000;
 		int ticket;
 		ticket = getIdentifier("this", false);
 		variable_map.get(ticket).class_name = curr_class.class_name;
@@ -64,24 +66,25 @@ public class VaporEnv {
 		}
 		
 		if (!method_name.equals("main")) {
+<<<<<<< HEAD
 		Method curr_method = Helper.getMethod(method_name, curr_class);
 		for (int i = 0; i < curr_method.args.size(); i++) {
 			String param_name = curr_method.args_name.get(i);
 			ticket = getIdentifier(param_name, true);
 			variable_map.get(ticket).class_name = curr_method.args.get(i).toString();
 		}
+=======
+			Method curr_method = Helper.getMethod(method_name, curr_class);
+			for (int i = 0; i < curr_method.args.size(); i++) {
+				String param_name = curr_method.args_name.get(i);
+				ticket = getIdentifier(param_name, true);
+				variable_map.get(ticket).class_name = curr_method.args.get(i).toString();
+			}
+>>>>>>> 68c6c4aeda725452697840cbecbe27773b470cd4
 		}
 	}
 
 	void endParseMethod() {
-		/*
-		 * System.out.println("Variable Map"); for (Integer ticket:
-		 * variable_map.keySet()){ String Vapor = variable_map.get(ticket).identifier;
-		 * System.out.println(ticket + " " + Vapor); }
-		 * System.out.println("Identifier Map"); for ( String idf:
-		 * identifier_map.keySet()){ Integer ticket = identifier_map.get(idf);
-		 * System.out.println(idf + " " + ticket.toString() ); }
-		 */
 		variable_map = null;
 		identifier_map = null;
 		var_num = 0;
@@ -103,6 +106,11 @@ public class VaporEnv {
 	int addTmpNum() {
 		tmp_num += 1;
 		return tmp_num - 1;
+	}
+	
+	int addArgNum() {
+		arg_num += 1;
+		return arg_num - 1;
 	}
 
 	int addLabel(String type) {
@@ -140,13 +148,19 @@ public class VaporEnv {
 			variable_map.put(ticket, v);
 			identifier_map.put(identifier, ticket);
 			_ret = ticket;
+<<<<<<< HEAD
 		} 
 
 
 			ticket = var_num + 1000; // arg used idx after 1000
+=======
+		} else if (out == null && isArg) {
+			ticket = addArgNum(); 
+>>>>>>> 68c6c4aeda725452697840cbecbe27773b470cd4
 			VaporValue v = new VaporValue(identifier);
 			variable_map.put(ticket, v);
 			identifier_map.put(identifier, ticket);
+			System.out.println("Add arg to variable map" + identifier);
 			_ret = ticket;
 		} else {
 			_ret = out;
@@ -189,7 +203,7 @@ public class VaporEnv {
 			return const_num;
 		}
 		
-		if (ticket >= 1000) {
+		if (ticket > 1000) {
 			String s = variable_map.get(ticket).identifier;
 			return s;
 		}
