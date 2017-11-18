@@ -56,14 +56,17 @@ public class VaporEnv {
 		int ticket;
 		ticket = getIdentifier("this");
 		
+		System.out.println("Main class Name is " + curr_class.class_name);
 		variable_map.get(ticket).class_name = curr_class.class_name;
 
 		//load class field
+		
 		for (int i = 0; i < curr_class.fields.size(); i++) {
 			String obj_name = curr_class.fields_name.get(i);
 			ticket = getIdentifier(obj_name);
 			variable_map.get(ticket).class_name = Helper.getObject(obj_name, curr_class).toString();
 		}
+		//getParentTypes(variable_map);
 		
 		//add method field to var_map and identifier_map
 		if (!method_name.equals("main")) {
@@ -79,7 +82,16 @@ public class VaporEnv {
 			}
 		}
 	}
-
+/*
+	 void getParentTypes(HashMap<Integer, VaporValue> h) {
+		    int ticket;
+		    for (ClassType id : classList) { 
+		      ticket = getIdentifier(id.class_name);
+		      variable_map.get(ticket).class_name = j.member_types.get(id);
+		    }
+	}
+	 */
+	
 	void endParseMethod() {
 		variable_map = null;
 		identifier_map = null;
@@ -140,13 +152,6 @@ public class VaporEnv {
 			_ret = out;
 		}
 		return _ret;
-	}
-
-	int checkVar(String identifier) {
-		Integer out = identifier_map.get(identifier);
-		if (out != null)
-			return out; 
-		return -1;
 	}
 	
 	int getTemporary() {
