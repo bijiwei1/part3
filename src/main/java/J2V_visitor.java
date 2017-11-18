@@ -47,13 +47,12 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   public Integer visit(MainClass n) {
     Integer return_value=null;
 
-    //String curr_class = n.f1.f0.toString();
-    String curr_class = "main";
+    String class_name = n.f1.f0.toString();
     env.method_name = "main";
-    env.startParseClass(curr_class);
+    env.startParseClass(class_name);
     env.startParseMethod();
 
-    stmtMethodParam(curr_class, "main");
+    stmtMethodParam(class_name, "main");
 
     pushIndentation();
 

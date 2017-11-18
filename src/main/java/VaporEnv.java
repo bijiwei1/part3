@@ -41,6 +41,9 @@ public class VaporEnv {
 
 	void startParseClass(String class_name) {
 		curr_class = Helper.getClass(class_name, classList);
+		if (curr_class == null) {
+			System.out.println("Can't find class");
+		}
 	}
 
 	void endParseClass() {
@@ -56,7 +59,6 @@ public class VaporEnv {
 		int ticket;
 		ticket = getIdentifier("this");
 		
-		System.out.println("Main class Name is " + curr_class.class_name);
 		variable_map.get(ticket).class_name = curr_class.class_name;
 
 		//load class field
