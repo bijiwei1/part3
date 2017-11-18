@@ -124,7 +124,7 @@ public class VaporEnv {
 			return label_num[0] - 1;
 		} else if (type.equals("while")) {
 			label_num[1] += 2;
-			return label_num[1] - 1;
+			return label_num[1] - 2;
 		} else if (type.equals("null")) {
 			label_num[2] += 1;
 			return label_num[2] - 1;
