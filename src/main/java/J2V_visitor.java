@@ -722,11 +722,10 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
       class_name = env.variable_map.get(a).class_name;
     }
 
-    //J2VClassLayout class_layout = env.layout.get(class_name);
     ClassType curr_class = Helper.getClass(class_name, classList);
     int offset = Helper.getMethodIdx(method_name, curr_class);
     
-    String method_type = curr_class.methods.get(offset).return_value.toString();
+    //String method_type = curr_class.methods.get(offset).return_value.toString();
 
     //to get the function name in ticket1
     stmtMemoryAccess(ticket1, env.findVariableEnv(a));
@@ -764,6 +763,8 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   public Integer visit(ExpressionList n) {
     Integer _ret=null;
     Integer a = n.f0.accept(this);
+    //JB
+    a = getExpression(a); 
     
     env.call_parameters_ticket.add(a);
     if (a == -1) {
@@ -782,6 +783,9 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   public Integer visit(ExpressionRest n) {
     Integer _ret=null;
     Integer a = n.f1.accept(this);
+    //JB
+    a = getExpression(a); 
+    
     env.call_parameters_ticket.add(a);
     if (a == -1) {
     	env.call_parameters_const.add(env.const_num);
