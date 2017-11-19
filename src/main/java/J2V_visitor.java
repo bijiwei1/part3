@@ -803,10 +803,11 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    */
   public Integer visit(IntegerLiteral n) {
     Integer _ret=null;
-    //int ticket = env.getTemporary(); 
-    //stmtAssignment(ticket, n.f0.toString());
-    _ret = -1;
-    env.const_num = n.f0.toString();
+    int ticket = env.addTemp(); 
+    stmtAssignment(ticket, n.f0.toString());
+    _ret = ticket;
+    //_ret = -1;
+    //env.const_num = n.f0.toString();
     //System.out.println("Add constant number" + env.const_num);
     return _ret;
   }
@@ -816,8 +817,12 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    */
   public Integer visit(TrueLiteral n) {
     Integer _ret=null;
-    _ret = -1;
-    env.const_num = "1";
+    int ticket = env.addTemp(); 
+    stmtAssignment(ticket, "1");
+    _ret = ticket;
+
+    //_ret = -1;
+    //env.const_num = "1";
     return _ret;
   }
 
@@ -826,8 +831,11 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    */
   public Integer visit(FalseLiteral n) {
     Integer _ret=null;
-    _ret = -1;
-    env.const_num = "0";
+    int ticket = env.addTemp(); 
+    stmtAssignment(ticket, "0");
+    _ret = ticket;
+    //_ret = -1;
+    //env.const_num = "0";
     return _ret;
   }
 
