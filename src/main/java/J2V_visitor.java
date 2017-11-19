@@ -549,11 +549,11 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   public Integer visit(CompareExpression n) {
     Integer _ret=null;
     String E1 = "";
-    int a = n.f0.accept(this);
+    Integer a = n.f0.accept(this);
     //JB
     a = getExpression(a);
     E1 = env.findVariableEnv(a);
-    int b = n.f2.accept(this);
+    Integer b = n.f2.accept(this);
     //JB
     b = getExpression(b);
   
