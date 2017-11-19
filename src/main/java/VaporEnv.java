@@ -215,6 +215,7 @@ public class VaporEnv {
 		int offset = 0;
 
 		// Var is in class field
+		/*
 		if (curr_class.fields_name.contains(s)) {
 			for (int i = 0; i < indentation_level; i++) {
 				System.out.printf("  ");
@@ -224,6 +225,14 @@ public class VaporEnv {
 			ticket = addTemp();
 			s = findVariableEnv(ticket);
 			System.out.println(s + " = " + t);
+		}*/
+		
+		if (curr_class.fields_name.contains(s)) {
+			for (int i = 0; i < indentation_level; i++) {
+				System.out.printf("  ");
+			}
+			offset = curr_class.fields_name.indexOf(s);
+			s = "[this+" + (offset + 1) * 4 + "]";
 		}
 
 		return s;
