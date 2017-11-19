@@ -550,8 +550,12 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     Integer _ret=null;
     String E1 = "";
     int a = n.f0.accept(this);
+    //JB
+    a = getExpression(a);
     E1 = env.findVariableEnv(a);
     int b = n.f2.accept(this);
+    //JB
+    b = getExpression(b);
   
     //JB stmtAssignment(ticket, "LtS(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
     expression = expression + "LtS(" + E1 + " " + env.findVariableEnv(b) + ")"; 
