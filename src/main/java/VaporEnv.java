@@ -155,8 +155,7 @@ public class VaporEnv {
 		return _ret;
 	}
 	
-	int getTemporary() {
-		
+	int addTemp() {
 		int ticket = addVarNum();
 		int tmp = addTmpNum();
 
@@ -164,6 +163,7 @@ public class VaporEnv {
 		variable_map.put(ticket, v);
 		return ticket;
 	}
+	
 
 	int getLabel(String type) {
 		int ticket = addVarNum();
@@ -211,7 +211,7 @@ public class VaporEnv {
 			}
 			offset = curr_class.fields_name.indexOf(s);
 			t = "[this+" + (offset + 1) * 4 + "]";
-			ticket = getTemporary();
+			ticket = addTemp();
 			s = findVariableEnv(ticket);
 			System.out.println(s + " = " + t);
 		}
