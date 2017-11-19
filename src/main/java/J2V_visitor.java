@@ -309,12 +309,8 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
 
     VaporValue v1 = env.variable_map.get(ticket);
     
-    if (a == null) {
-    	stmtAssignment(ticket, expression);
-    	expression = "";
-    	v1.class_name = type;
-    }else {
-    	stmtAssignment(ticket, env.findVariableEnv(a)); 
+    //JB
+    stmtAssignment(ticket, env.findVariableEnv(a)); 
     	if (a!= -1) {
         	VaporValue v2 = env.variable_map.get(a);
         	if (v1.class_name != null ) {
@@ -325,7 +321,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
         		v1.class_name = "Int";
         	}
         }
-    }
+   
     
     
     
@@ -567,7 +563,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //expression = "Add(" + E1 + " " + env.findVariableEnv(b) + ")";
     //type = "Int";
     
-    //_ret = ticket;
+    _ret = ticket;
     return _ret;
   }
 
@@ -590,7 +586,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //expression = "Sub(" + E1 + " " + env.findVariableEnv(b) + ")";
     //type = "Int";
     
-    //_ret = ticket;
+    _ret = ticket;
     return _ret;
   }
 
@@ -613,7 +609,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     //expression = "MulS(" + E1 + " " + env.findVariableEnv(b) + ")";
     //type = "Int";
     
-    //_ret = ticket;
+    _ret = ticket;
     return _ret;
   }
 
@@ -744,8 +740,9 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    // expression = "call " + env.findVariableEnv(ticket1) + "(" + env.findVariableEnv(a) + parameters + ")";
    // type = Helper.getMethod(method_name, curr_class).return_value.toString();
     VaporValue v = env.variable_map.get(ticket2);
-    v.class_name =Helper.getMethod(method_name, curr_class).return_value.toString();;
-
+    v.class_name =Helper.getMethod(method_name, curr_class).return_value.toString();
+    
+    _ret= ticket2;
     return _ret;
   }
 
