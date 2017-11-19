@@ -56,9 +56,10 @@ public class VaporEnv {
 		identifier_map = new HashMap<String, Integer>();
 		var_num = 0;
 		tmp_num = 0;
+		
+		//load curr class addr
 		int ticket;
 		ticket = getIdentifier("this");
-		
 		variable_map.get(ticket).class_name = curr_class.class_name;
 
 		//load class field
@@ -67,14 +68,23 @@ public class VaporEnv {
 			ticket = getIdentifier(obj_name);
 			variable_map.get(ticket).class_name = Helper.getObject(obj_name, curr_class).toString();
 		}
-		//getParentTypes(variable_map);
 		
+		//load parent class fields
+		ClassType tmp = curr_class.super_class;
+		while(tmp!= null){
+			for (int i = 0; i < tmp.fields.size(); i++) {
+				String obj_name = tmp.fields_name.get(i);
+				ticket = getIdentifier(obj_name);
+				variable_map.get(ticket).class_name = Helper.getObject(obj_name, tmp).toString();
+			}
+		}
+				
 		//add method variables to var_map and identifier_map
 		if (!method_name.equals("main")) {
 			Method curr_method = Helper.getMethod(method_name, curr_class);
 			for (int i = 0; i < curr_method.vars.size(); i++) {
 				String method_var = curr_method.vars_name.get(i);
-				ticket = 1000 + i;
+				ticket = getIdentifier(method_var);
 				VaporValue v = new VaporValue(method_var);
 				variable_map.put(ticket, v);
 				identifier_map.put(method_var, ticket);
@@ -86,25 +96,17 @@ public class VaporEnv {
 		if (!method_name.equals("main")) {
 			Method curr_method = Helper.getMethod(method_name, curr_class);
 			for (int i = 0; i < curr_method.args.size(); i++) {
-				String method_args = curr_method.args_name.get(i);
-				ticket = getIdentifier(method_args);
-				VaporValue v = new VaporValue(method_args);
+				String method_arg = curr_method.args_name.get(i);
+				ticket = getIdentifier(method_arg);
+				VaporValue v = new VaporValue(method_arg);
 				variable_map.put(ticket, v);
-				identifier_map.put(method_args, ticket);
+				identifier_map.put(method_arg, ticket);
 				variable_map.get(ticket).class_name = curr_method.args.get(i).toString();
 			}
 		}
 		
 	}
-/*
-	 void getParentTypes(HashMap<Integer, VaporValue> h) {
-		    int ticket;
-		    for (ClassType id : classList) { 
-		      ticket = getIdentifier(id.class_name);
-		      variable_map.get(ticket).class_name = j.member_types.get(id);
-		    }
-	}
-	 */
+
 	
 	void endParseMethod() {
 		variable_map = null;
@@ -206,11 +208,6 @@ public class VaporEnv {
 	String findVariableEnv(int ticket) {
 		if (ticket == -1) {
 			return const_num;
-		}
-		
-		if (ticket > 1000) {
-			String s = variable_map.get(ticket).identifier;
-			return s;
 		}
 		
 		String s = variable_map.get(ticket).identifier;
