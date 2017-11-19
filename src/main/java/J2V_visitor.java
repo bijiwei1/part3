@@ -548,13 +548,13 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
    */
   public Integer visit(CompareExpression n) {
     Integer _ret=null;
+    String E1 = "";
     int a = n.f0.accept(this);
+    E1 = env.findVariableEnv(a);
     int b = n.f2.accept(this);
-
-    //int ticket = env.addTemp();
   
     //JB stmtAssignment(ticket, "LtS(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")");
-    expression = expression + "LtS(" + env.findVariableEnv(a) + " " + env.findVariableEnv(b) + ")"; 
+    expression = expression + "LtS(" + E1 + " " + env.findVariableEnv(b) + ")"; 
     type = "Int";
     //_ret = ticket;
     return _ret;
@@ -573,6 +573,8 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     E1 = env.findVariableEnv(a);
     
     int b = n.f2.accept(this);
+    //JB
+    b = getExpression(b);
     
     //int ticket = env.addTemp();
     
@@ -597,7 +599,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     E1 = env.findVariableEnv(a);
     
     int b = n.f2.accept(this);
-    
     //int ticket = env.addTemp();
     
     //JB stmtAssignment(ticket, "Sub(" + E1 + " " + env.findVariableEnv(b) + ")");
@@ -641,7 +642,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     Integer _ret=null;
     int a = n.f0.accept(this);
     int b = n.f2.accept(this);
-  
+    
     int ticket1 = env.addTemp();
     int ticket2 = env.addTemp();
     int ticket3 = env.addTemp();
@@ -848,7 +849,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
   public Integer visit(FalseLiteral n) {
     Integer _ret=null;
     _ret = -1;
-    env.const_num = "1";
+    env.const_num = "0";
     return _ret;
   }
 
@@ -960,8 +961,6 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     System.out.printf(")\n");
   }
   
-
-  //////////////////////////////
   void pushIndentation() {
     env.indentation_level += 1;
   }
