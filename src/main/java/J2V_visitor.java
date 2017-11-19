@@ -710,7 +710,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     }
 
     int ticket1 = env.addTemp();
-    int ticket2 = env.addTemp();
+    //int ticket2 = env.addTemp();
     
     String method_name = n.f2.f0.toString();
     String class_name;
@@ -749,11 +749,10 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
 
     //JB stmtAssignment(ticket2, "call " + env.findVariableEnv(ticket1) + "(" + env.findVariableEnv(a) + parameters + ")");
     expression = "call " + env.findVariableEnv(ticket1) + "(" + env.findVariableEnv(a) + parameters + ")";
-    System.out.println("Get here");
+    
     //VaporValue v = env.variable_map.get(ticket2);
     //v.class_name = method_type;
 
-    _ret = ticket2;
     return _ret;
   }
 
