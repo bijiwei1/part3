@@ -62,7 +62,6 @@ public class VaporEnv {
 		variable_map.get(ticket).class_name = curr_class.class_name;
 
 		//load class field
-		
 		for (int i = 0; i < curr_class.fields.size(); i++) {
 			String obj_name = curr_class.fields_name.get(i);
 			ticket = getIdentifier(obj_name);
@@ -82,6 +81,20 @@ public class VaporEnv {
 				variable_map.get(ticket).class_name = curr_method.vars.get(i).toString();
 			}
 		}
+		
+		//add method arg to var_map and identifier_map
+		if (!method_name.equals("main")) {
+			Method curr_method = Helper.getMethod(method_name, curr_class);
+			for (int i = 0; i < curr_method.args.size(); i++) {
+				String method_args = curr_method.args_name.get(i);
+				ticket = getIdentifier(method_args);
+				VaporValue v = new VaporValue(method_args);
+				variable_map.put(ticket, v);
+				identifier_map.put(method_args, ticket);
+				variable_map.get(ticket).class_name = curr_method.args.get(i).toString();
+			}
+		}
+		
 	}
 /*
 	 void getParentTypes(HashMap<Integer, VaporValue> h) {
