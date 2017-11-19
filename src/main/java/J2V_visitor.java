@@ -979,7 +979,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     	Helper.exit("Null rhs given to stmtMemoryAssignment function");
     }
     indentVapor();
-    System.out.println("[" + env.findVariableEnv(lhs) + "] = " + rhs);
+    System.out.println("[" + env.findVariableEnv_left(lhs) + "] = " + rhs);
   }
 
   void stmtMemoryAccess(int lhs, String rhs) {
@@ -987,7 +987,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     	Helper.exit("Null rhs given to stmtMemoryAccess function");
     }
     indentVapor();
-    System.out.println(env.findVariableEnv(lhs) + " = [" + rhs + "]");
+    System.out.println(env.findVariableEnv_left(lhs) + " = [" + rhs + "]");
   }
 
   void stmtLabel(int label) {
