@@ -310,17 +310,17 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     VaporValue v1 = env.variable_map.get(ticket);
     
     //JB
-    stmtAssignment(ticket, env.findVariableEnv(a)); 
-    	if (a!= -1) {
-        	VaporValue v2 = env.variable_map.get(a);
-        	if (v1.class_name != null ) {
-        		v1.class_name = v2.class_name;
-        	}
-        }else {
-        	if (v1.class_name != null ) {
-        		v1.class_name = "Int";
-        	}
-        }
+    stmtAssignment(ticket, env.findVariableEnv_left(a)); 
+    if (a!= -1) {
+       	VaporValue v2 = env.variable_map.get(a);
+       	if (v1.class_name != null ) {
+       		v1.class_name = v2.class_name;
+       	}
+     }else {
+       	if (v1.class_name != null ) {
+       		v1.class_name = "Int";
+       	}
+     }
    
     
     

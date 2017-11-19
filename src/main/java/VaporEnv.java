@@ -5,19 +5,18 @@ public class VaporEnv {
 	List<ClassType> classList;
 	ClassType curr_class;
 	String method_name;
-	
+
 	// Used only in second pass
 	int indentation_level;
 	int[] label_num = new int[5]; // 0 - if_else, 1 - while, 2 - null, 3 - bounds, 4 - other labels
 	int tmp_num;
 	int var_num;
-	//int arg_num;
+	// int arg_num;
 	HashMap<Integer, VaporValue> variable_map;
 	HashMap<String, Integer> identifier_map;
 	List<Integer> call_parameters_ticket;
 	List<String> call_parameters_const;
 	String const_num;
-	
 
 	public VaporEnv(List<ClassType> classList) {
 		this.classList = classList;
@@ -51,35 +50,35 @@ public class VaporEnv {
 	}
 
 	void startParseMethod() {
-		
+
 		variable_map = new HashMap<Integer, VaporValue>();
 		identifier_map = new HashMap<String, Integer>();
 		var_num = 0;
 		tmp_num = 0;
-		
-		//load curr class addr
+
+		// load curr class addr
 		int ticket;
 		ticket = getIdentifier("this");
 		variable_map.get(ticket).class_name = curr_class.class_name;
 
-		//load class field
+		// load class field
 		for (int i = 0; i < curr_class.fields.size(); i++) {
 			String obj_name = curr_class.fields_name.get(i);
 			ticket = getIdentifier(obj_name);
 			variable_map.get(ticket).class_name = Helper.getObject(obj_name, curr_class).toString();
 		}
-		
-		//load parent class fields
+
+		// load parent class fields
 		ClassType tmp = curr_class.super_class;
-		while(tmp!= null){
+		while (tmp != null) {
 			for (int i = 0; i < tmp.fields.size(); i++) {
 				String obj_name = tmp.fields_name.get(i);
 				ticket = getIdentifier(obj_name);
 				variable_map.get(ticket).class_name = Helper.getObject(obj_name, tmp).toString();
 			}
 		}
-				
-		//add method variables to var_map and identifier_map
+
+		// add method variables to var_map and identifier_map
 		if (!method_name.equals("main")) {
 			Method curr_method = Helper.getMethod(method_name, curr_class);
 			for (int i = 0; i < curr_method.vars.size(); i++) {
@@ -91,8 +90,8 @@ public class VaporEnv {
 				variable_map.get(ticket).class_name = curr_method.vars.get(i).toString();
 			}
 		}
-		
-		//add method arg to var_map and identifier_map
+
+		// add method arg to var_map and identifier_map
 		if (!method_name.equals("main")) {
 			Method curr_method = Helper.getMethod(method_name, curr_class);
 			for (int i = 0; i < curr_method.args.size(); i++) {
@@ -104,10 +103,9 @@ public class VaporEnv {
 				variable_map.get(ticket).class_name = curr_method.args.get(i).toString();
 			}
 		}
-		
+
 	}
 
-	
 	void endParseMethod() {
 		variable_map = null;
 		identifier_map = null;
@@ -157,19 +155,19 @@ public class VaporEnv {
 		Integer out = identifier_map.get(identifier);
 		int _ret;
 		int ticket = 0;
-		
+
 		if (out == null) {
 			ticket = addVarNum();
 			VaporValue v = new VaporValue(identifier);
 			variable_map.put(ticket, v);
 			identifier_map.put(identifier, ticket);
 			_ret = ticket;
-		}else {
+		} else {
 			_ret = out;
 		}
 		return _ret;
 	}
-	
+
 	int addTemp() {
 		int ticket = addVarNum();
 		int tmp = addTmpNum();
@@ -178,7 +176,6 @@ public class VaporEnv {
 		variable_map.put(ticket, v);
 		return ticket;
 	}
-	
 
 	int getLabel(String type) {
 		int ticket = addVarNum();
@@ -191,7 +188,8 @@ public class VaporEnv {
 			v = new VaporValue("while" + tmp + "_top");
 			variable_map.put(ticket, v);
 			ticket = addVarNum();
-			v = new VaporValue("while" + tmp + "_end");;
+			v = new VaporValue("while" + tmp + "_end");
+			;
 		} else if (type.equals("null")) {
 			v = new VaporValue("null" + tmp);
 		} else if (type.equals("bounds")) {
@@ -201,7 +199,7 @@ public class VaporEnv {
 		}
 
 		variable_map.put(ticket, v);
-		
+
 		return ticket;
 	}
 
@@ -209,13 +207,12 @@ public class VaporEnv {
 		if (ticket == -1) {
 			return const_num;
 		}
-		
+
 		String s = variable_map.get(ticket).identifier;
 		String t;
 		int offset = 0;
 
 		// Var is in class field
-		/*
 		if (curr_class.fields_name.contains(s)) {
 			for (int i = 0; i < indentation_level; i++) {
 				System.out.printf("  ");
@@ -225,8 +222,21 @@ public class VaporEnv {
 			ticket = addTemp();
 			s = findVariableEnv(ticket);
 			System.out.println(s + " = " + t);
-		}*/
-		
+		}
+
+		return s;
+	}
+
+	String findVariableEnv_left(int ticket) {
+		if (ticket == -1) {
+			return const_num;
+		}
+
+		String s = variable_map.get(ticket).identifier;
+		String t;
+		int offset = 0;
+
+		// Var is in class field
 		if (curr_class.fields_name.contains(s)) {
 			for (int i = 0; i < indentation_level; i++) {
 				System.out.printf("  ");
@@ -234,7 +244,6 @@ public class VaporEnv {
 			offset = curr_class.fields_name.indexOf(s);
 			s = "[this+" + (offset + 1) * 4 + "]";
 		}
-
 		return s;
 	}
 
