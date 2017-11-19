@@ -310,7 +310,8 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
     VaporValue v1 = env.variable_map.get(ticket);
     
     //JB
-    stmtAssignment(ticket, env.findVariableEnv_left(a)); 
+    stmtAssignment(ticket, env.findVariableEnv(a)); 
+    
     if (a!= -1) {
        	VaporValue v2 = env.variable_map.get(a);
        	if (v1.class_name != null ) {
@@ -970,7 +971,7 @@ public class J2V_visitor extends GJNoArguDepthFirst<Integer> {
       Helper.exit("Null rhs given to stmtAssignment function");
     }
     indentVapor();
-    System.out.println(env.findVariableEnv(lhs) +  " = " + rhs);
+    System.out.println(env.findVariableEnv_left(lhs) +  " = " + rhs);
   }
 
   void stmtMemoryAssignment(int lhs, String rhs) {
