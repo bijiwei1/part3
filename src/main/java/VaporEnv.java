@@ -14,8 +14,10 @@ public class VaporEnv {
 	// int arg_num;
 	HashMap<Integer, VaporValue> variable_map;
 	HashMap<String, Integer> identifier_map;
-	List<Integer> call_parameters_ticket;
-	List<String> call_parameters_const;
+	//List<Integer> call_parameters_ticket;
+ 	Vector<Integer> call_parameters_ticket;
+  	Stack<Vector<Integer>> call_list;
+
 	String const_num;
 
 	public VaporEnv(List<ClassType> classList) {
@@ -31,9 +33,8 @@ public class VaporEnv {
 		var_num = 0;
 		variable_map = null;
 		identifier_map = null;
-		call_parameters_ticket = new ArrayList<Integer>();
-		call_parameters_const = new ArrayList<String>();
-		// call_list = new Stack<List<Integer>>();
+		//call_parameters_ticket = new ArrayList<Integer>();
+		call_list = new Stack<Vector<Integer>>();
 		const_num = "";
 
 	}
@@ -68,7 +69,8 @@ public class VaporEnv {
 			variable_map.get(ticket).class_name = Helper.getObject(obj_name, curr_class).toString();
 		}
 
-		// load parent class fields
+		// load parent class fields - only used by ClassExtendsDeclaration
+		
 		ClassType tmp = curr_class.super_class;
 		while (tmp != null) {
 			for (int i = 0; i < tmp.fields.size(); i++) {
@@ -76,7 +78,9 @@ public class VaporEnv {
 				ticket = getIdentifier(obj_name);
 				variable_map.get(ticket).class_name = Helper.getObject(obj_name, tmp).toString();
 			}
+			tmp = tmp.super_class;
 		}
+		
 
 		// add method variables to var_map and identifier_map
 		if (!method_name.equals("main")) {
@@ -113,10 +117,12 @@ public class VaporEnv {
 		tmp_num = 0;
 	}
 
+/*
 	void clearCallParam() {
 		call_parameters_ticket.clear();
 		call_parameters_const.clear();
 	}
+	*/
 
 	// Methods to support environment variable operations
 
@@ -183,13 +189,15 @@ public class VaporEnv {
 
 		VaporValue v;
 		if (type.equals("if_else")) {
+			v = new VaporValue("if" + tmp + "_else");
+			variable_map.put(ticket, v);
+			ticket = addVarNum();
 			v = new VaporValue("if" + tmp + "_end");
 		} else if (type.equals("while")) {
 			v = new VaporValue("while" + tmp + "_top");
 			variable_map.put(ticket, v);
 			ticket = addVarNum();
 			v = new VaporValue("while" + tmp + "_end");
-			;
 		} else if (type.equals("null")) {
 			v = new VaporValue("null" + tmp);
 		} else if (type.equals("bounds")) {
@@ -222,7 +230,29 @@ public class VaporEnv {
 			ticket = addTemp();
 			s = findVariableEnv(ticket);
 			System.out.println(s + " = " + t);
+
+			return s;
 		}
+
+		//Check if variable is in parent class
+		offset = offset + 1 + curr_class.fields.size();
+
+		ClassType tmp = curr_class.super_class;
+    	while (tmp != null) {
+    		if (tmp.fields_name.contains(s)) {
+				for (int i = 0; i < indentation_level; i++) {
+					System.out.printf("  ");
+				}
+				offset = tmp.fields_name.indexOf(s) + offset;
+				t = "[this+" + offset * 4 + "]";
+				ticket = addTemp();
+				s = findVariableEnv(ticket);
+				System.out.println(s + " = " + t);
+				return s; 
+			}
+      		offset = offset + tmp.fields.size();
+      		tmp = tmp.super_class;
+    	}
 
 		return s;
 	}
@@ -236,14 +266,35 @@ public class VaporEnv {
 		String t;
 		int offset = 0;
 
-		// Var is in class field
+		// Var is in current class field 
 		if (curr_class.fields_name.contains(s)) {
 			for (int i = 0; i < indentation_level; i++) {
 				System.out.printf("  ");
 			}
 			offset = curr_class.fields_name.indexOf(s);
 			s = "[this+" + (offset + 1) * 4 + "]";
+			return s; 
 		}
+
+		offset = offset + 1 + curr_class.fields.size();
+
+		ClassType tmp = curr_class.super_class;
+    	while (tmp != null) {
+    		if (tmp.fields_name.contains(s)) {
+				for (int i = 0; i < indentation_level; i++) {
+					System.out.printf("  ");
+				}
+				offset = tmp.fields_name.indexOf(s) + offset;
+				s = "[this+" + offset * 4 + "]";
+				return s; 
+			}
+      		offset = offset + tmp.fields.size();
+      		tmp = tmp.super_class;
+    	}
+
+		//Var is in parent class field
+
+
 		return s;
 	}
 

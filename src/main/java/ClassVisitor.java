@@ -36,8 +36,7 @@ public class ClassVisitor extends GJVoidDepthFirst<List<ClassType>>{
 		classList.add(newclass);
 		
 		Method m = new Method("main");
-		newclass.methods.add(m);
-		
+		newclass.methods.add(m);	
 	}
 	
 	public void visit(ClassDeclaration n, List<ClassType> classList) {

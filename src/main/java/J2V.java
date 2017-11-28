@@ -92,6 +92,7 @@ class ClassType extends GType{
 class Method extends GType{
 	String method_name;
 	GType return_value;
+	String return_name;
 	List<GType> args = new ArrayList<GType>();
 	List<String> args_name = new ArrayList<String>();
 	List<GType> vars = new ArrayList<GType>();
@@ -171,11 +172,27 @@ class Helper{
 
 	//find method offset
 	public static int getMethodIdx(String method_name, ClassType curr_class){ 
+		int offset = 0; 
+
 		for (int i = 0 ; i < curr_class.methods.size(); i++) {
 			if (curr_class.methods.get(i).method_name.equals(method_name)) {
 				return i;
 			}
 		}
+		
+		offset = curr_class.methods.size();
+
+		ClassType tmp = curr_class.super_class;
+		while (tmp != null) {
+			for (int i = 0 ; i < tmp.methods.size(); i++) {
+				if (tmp.methods.get(i).method_name.equals(method_name)) {
+					return i + offset;
+				}
+			}
+			tmp = tmp.super_class;
+			offset = offset + tmp.methods.size();
+		}
+
 		return -1;
 	}
 	
@@ -289,12 +306,27 @@ class Helper{
 	public static void class_method(List<ClassType> classList){
 		for (ClassType ct : classList){
 			if (!ct.isMain) {
+				List<String> allMethods = new ArrayList<String> ();
+
 				System.out.println("const vmt_" + ct.class_name);
 				for (Method m : ct.methods){
 					System.out.println("  :" + ct.class_name + "." + m.method_name);
+					allMethods.add("m.method_name");
 				}
+
+				ClassType tmp = ct.super_class;
+				while (tmp != null) {
+					for (Method m : tmp.methods){
+						//If parent has its own specific methods (child did not overwrite this method)
+						if (!allMethods.contains(m.method_name)){
+							System.out.println("  :" + tmp.class_name + "." + m.method_name);
+							allMethods.add("m.method_name");
+						}
+					}
+					tmp = tmp.super_class;
+				}
+				System.out.println("");
 			}
-			System.out.println("");
 		}
 		System.out.println("");
 		return; 

@@ -12,7 +12,6 @@ public class FieldVisitor extends GJVoidDepthFirst<List<GType>>{
 		this.classList = classList;
 	}
 	
-	// 
 	public void visit(Goal n,  List<GType> tmp) {
 		n.f1.accept(this, tmp);
 	}
